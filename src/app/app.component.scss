@@ -1,0 +1,27 @@
+mat-toolbar {
+    float: left;
+    a {
+        &.title {
+            color: black;
+            text-decoration: none;
+        }
+    }
+}
+div {
+    &.floatright {
+        display: block;
+        float: right;
+    }
+}
+.example-spacer {
+    flex: 1 1 auto;
+  }
+div {
+    &.wrapper {
+        display: block;
+        float: left;
+        width: 100%;
+        height: auto;
+        margin: 20px 0 0;
+    }
+}

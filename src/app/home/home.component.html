@@ -1,0 +1,92 @@
+
+<button *ngIf="!showUpload"  class="showButton open rubber" (click)="show($event)">
+    <span>🎼Julkaise oma video 🎼</span>
+    <svg viewBox="-5 -5 110 110" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,0 C0,0 100,0 100,0 C100,0 100,100 100,100 C100,100 0,100 0,100 C0,100 0,0 0,0"/>
+    </svg>
+</button>
+<button *ngIf="showUpload" class="showButton" mat-button color="primary" (click)="show($event)">Videon luonti</button>
+<div class="info" *ngIf="showUpload">
+    <header>
+        <h1>Nopea ohje</h1>
+    </header>
+    <ul>
+        <li>Valitse suosikkibiisin .mp3</li>
+        <li>Valitse 1-4 kuvaa joista pidät</li>
+        <li>Valitse 1-4 kuvaa itsestäsi</li>
+        <li>Valitse 1 video tiedosto Mp4</li>
+        <li>Laita ne kaikki yhteen kansioon kotikoneelle</li>
+    </ul>
+    <app-videoxi></app-videoxi>
+</div>
+<div class="filters">
+    <header>
+        <h1>Filteröinti</h1>
+    </header>
+    <form class="example-form"  *ngIf="showFilter">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Videon nimi</mat-label>
+            <input #search type="text"
+                    placeholder="Hae"
+                    aria-label="Videon nimi"
+                    title="Hae videota"
+                    matInput
+                    [formControl]="myControl"
+                    [matAutocomplete]="auto">
+            <mat-autocomplete (optionSelected)="filterVideos($event)" autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+    <button mat-raised-button color="primary" (click)="orderByDate($event)">Päivämäärän mukaan</button>
+    <button mat-raised-button color="primary" (click)="orderByPlays($event)">Suosion mukaan</button>
+    <mat-form-field appearance="fill">
+        <mat-label>Genre</mat-label>
+        <mat-select [formControl]="toppings" multiple (valueChange)="filterByGenere($event)">
+          <mat-select-trigger>
+            {{toppings.value?.[0] || ''}}
+            <span *ngIf="(toppings.value?.length || 0) > 1" class="example-additional-selection">
+              (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <h2>Videon AI tägit</h2>
+    <ul class="tags">
+        <li *ngFor="let tag of tagsArr">
+          <mat-checkbox value="{{tag.name}}" (change)="updateTags($event, tag)">
+            {{tag.name}} <strong>({{tag.count}})</strong>
+          </mat-checkbox>
+        </li>
+      </ul>
+</div>
+<section class="videoList">
+    <header>
+        <h1>Kaikki videot soitin</h1>
+    </header>
+    <ngx-video-list-player *ngIf="showVideoList" [config]="config">
+        
+    </ngx-video-list-player>
+</section>
+<section class="card hmedia" [ngClass]="{'hidden':!torrent.show}" *ngFor="let torrent of torrents; let i = index">
+
+    <mat-card class="example-card" class="torrent-{{i}}" *ngIf="torrent.show">
+        <mat-card-content>
+            <div class="video">
+                <video class="player" data="{{backend.backend}}/videoLibrary/{{torrent.filename}}" title="{{torrent.name}}" controls controlsList="nodownload" (play)="playEvent($event, torrent)">
+                    <source name="movie" src="{{backend.backend}}/videoLibrary/{{torrent.filename}}" type="video/mp4">
+                </video>
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title class="entry-title fn" rel="bookmark">{{torrent.name}}</mat-card-title>
+            <mat-card-subtitle class="entry-content">Julkaistu: <span class="updated" title="{{torrent.date}}">{{torrent.humanDate}}</span> | Koko: {{humanFileSize(torrent.size)}} | Soittoja: {{(torrent.plays) ? torrent.plays : 0}} | Genre: {{(torrent.genre) ? torrent.genre : ''}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+            <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
+        </mat-card-actions>
+    </mat-card>
+</section>

@@ -1,0 +1,20 @@
+<section *ngFor="let page of pages" class="page">
+    <div class="cover" *ngFor="let cover of page.covers">
+        <div class="wrapper" style="background-image:url('{{cover.background}}');">
+            <h1 *ngIf="cover.artist">{{cover.artist}}</h1>
+            <h3 *ngIf="cover.julkaisu">Julkaisu: <input type="text" value="{{cover.julkaisu}}" (change)="changePublishDate($event)" /></h3>
+            <h1 class="levynNimi" *ngIf="cover.levynNimi">{{cover.levynNimi}}</h1>
+            <h2 class="type" *ngIf="cover.type">{{cover.type}}</h2>
+            <h4>🎸</h4>
+            <h5>🎶</h5>
+            <h6>🎼</h6>
+            <h7>💃</h7>
+            <h8>📣</h8>
+            <h1 *ngIf="cover.biisit.length">Kappaleet</h1>
+            <div class="biisi" *ngFor="let biisi of cover.biisit">
+                <span class="name">{{biisi.name}}</span> <span class="spacer">|</span> <span class="length">{{biisi.pituus}}</span>
+            </div>
+            <p class="copyright">{{cover.copyright}}</p>
+        </div>
+    </div>
+</section>

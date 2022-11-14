@@ -1,0 +1,12 @@
+section {
+    &.upload {
+        display: block;
+        width: 500px;
+        height: 200px;
+        border: 1px dashed rgb(37, 37, 37);
+        border-radius: 25% 45%;
+        margin: 20px auto 0;
+        line-height: 200px;
+        text-align: center;
+    }
+}

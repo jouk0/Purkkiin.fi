@@ -1,0 +1,5 @@
+<section *ngFor="let image of images; let i = index">
+    <div *ngIf="true">
+        <img src="{{backend.backend}}/videoLibrary/{{image.path}}" width="512" crossorigin='anonymous' (load)="detectImages($event, image)" />
+    </div>
+</section>

@@ -1,0 +1,43 @@
+section {
+    display: block;
+    margin: 0 auto;
+    width: 512px;
+    video {
+        display: block;
+        width: 100%;
+    }
+    
+    mat-card {
+        display: block;
+        float: left;
+        mat-card-header {
+            display: block;
+            float: left;
+            mat-card-title {
+                font-size: 17px;
+                height: 39px;
+            }
+        }
+        mat-card-actions {
+            display: block;
+            float: left;
+            a,
+            button {
+                display: block;
+                float: left;
+                font-size: 12px;
+                margin-right: 1%;
+                margin-left: 0;
+                width: 15.6666%;
+                margin-bottom: 5px;
+                padding: 0 !important;
+                svg {
+                    display: block;
+                    float: left;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+        }
+    }
+}
