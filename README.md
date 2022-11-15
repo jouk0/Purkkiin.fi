@@ -16,6 +16,8 @@ When developing please change environment configure to your own backend server a
 
 Fill out .env file.
 
+To build production run `npm run production`. Move files from dist/mp3ToVideo to backend mp3ToVideo folder.
+
 Run `cd backend` and run `node server.js` on the backend folder.
 
 ## Dependencies
