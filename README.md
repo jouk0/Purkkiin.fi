@@ -2,9 +2,20 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
 
+## From start
+
+Run `npm install`.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Backend server
+
+Run `cd backend` and run `node server.js` on the backend folder.
+
+## Dependencies
+    * Redis server
 
 ## Code scaffolding
 
