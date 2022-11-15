@@ -18,6 +18,8 @@ Fill out .env file.
 
 To build production run `npm run production`. Move files from dist/mp3ToVideo to backend mp3ToVideo folder.
 
+To create https certificates run `certbot certonly` and move privkey.pem and fullchain.pem to backend cert folder.
+
 Run `cd backend` and run `node server.js` on the backend folder.
 
 ## Dependencies
