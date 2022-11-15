@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express")
 const cors = require("cors")
 const fs = require('fs')
@@ -30,7 +31,7 @@ var certificate = fs.readFileSync(__dirname + '/cert/fullchain.pem');
 var useragent = require('express-useragent');
 var geoip = require('geoip-lite');
 const opennode = require('opennode');
-opennode.setCredentials('API KEY', 'live');
+opennode.setCredentials(process.env.OPENNODEAPIKEY, 'live');
 
 var credentials = {key: privateKey, cert: certificate};
 var app = express();
@@ -133,7 +134,7 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
 serverAdapter.setBasePath('/admin/queues')
 const users = [{
     username: 'admin',
-    password: ''
+    password: process.env.ADMINPASSWORD
 }]
 app.post('/login', (req, res) => {
     let found = false

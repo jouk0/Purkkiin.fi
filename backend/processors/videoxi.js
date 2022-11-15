@@ -2,10 +2,11 @@ const Queue = require('bull');
 const fs = require('fs')
 const Xvfb = require('xvfb');
 const getMP3Duration = require('get-mp3-duration')
+const { getAudioDurationInSeconds } = require('get-audio-duration')
 const editly = require('editly');
 const common = require('../common')
 const torrentsJson = __dirname + '/data/torrents.json'
-const videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: 'R3dishAlive'*/ } });
+const videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
 const imageSetup = require('./images')
 const videoSetup = require('./videos')
 const noiseSetup = require('./noise')
@@ -28,7 +29,7 @@ videoQueue.process(async (job, done) => {
         duration: 2,
         layers: [
           { type: 'rainbow-colors' },
-          { type: 'canvas', noiseSetup },
+          //{ type: 'canvas', noiseSetup },
         ] 
     })
     let clips2 = JSON.parse(JSON.stringify(clips))
@@ -49,7 +50,13 @@ videoQueue.process(async (job, done) => {
             clips: clips
         }
         const buffer = fs.readFileSync(newVideo.mp3)
-        const duration = getMP3Duration(buffer)
+        let duration
+        if(newVideo.mp3.includes('.flac')) {
+            let stream = fs.createReadStream(newVideo.mp3)
+            duration = await getAudioDurationInSeconds(stream)
+        } else {
+            duration = getMP3Duration(buffer)
+        }
         let mp3LenghtInSeconds = duration/1000
         let editSpec = {
             width: 512,
