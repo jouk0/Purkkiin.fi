@@ -133,7 +133,7 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
 serverAdapter.setBasePath('/admin/queues')
 const users = [{
     username: 'admin',
-    password: 'purkkiinOnAccess1@'
+    password: ''
 }]
 app.post('/login', (req, res) => {
     let found = false
