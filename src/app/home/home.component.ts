@@ -116,6 +116,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  donate(e:MouseEvent, inputClass:string) {
+    e.preventDefault()
+    e.stopPropagation()
+    let input: any = document.querySelectorAll('input.' + inputClass)[0]
+    let email: any = input.value
+    this.backend.donate(email)
+  }
   updateTags(e:any, tag:any) {
     if(e.checked) {
       this.torrents.forEach((video:any, ind:number) => {

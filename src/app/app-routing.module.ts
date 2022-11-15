@@ -8,6 +8,7 @@ import { VideoComponent } from './video/video.component'
 import { VideoxiComponent } from './videoxi/videoxi.component'
 import { SocialShareComponent } from './social-share/social-share.component'
 import { AitagsComponent } from './aitags/aitags.component'
+import { OpennodeComponent } from './opennode/opennode.component'
 const routes: Routes = [{
   path: '', component: HomeComponent
 }, {
@@ -22,6 +23,8 @@ const routes: Routes = [{
   path: 'video/:id', component: SocialShareComponent
 },{
   path: 'aitags', component: AitagsComponent
+},{
+  path: 'opennode', component: OpennodeComponent
 }, {
   path: '**', component: FourOFourComponent
 }];

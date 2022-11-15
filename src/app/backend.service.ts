@@ -30,6 +30,20 @@ export class BackendService {
   ) {
     this.update()
   }
+  donate(email:string) {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    let data = {
+      email: email
+    }
+    this.http.post(this.backend + '/donate', JSON.stringify(data), {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+      window.open(response.hosted_checkout_url, '_blank')
+    })
+  }
   updateAiTag(path:string, categories:Array<any>) {
     
     const headers = { 

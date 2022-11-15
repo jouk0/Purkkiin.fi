@@ -45,6 +45,7 @@
     "music-metadata-browser": "^2.5.7",
     "ngx-google-analytics": "^13.0.1",
     "ngx-video-list-player": "^13.0.2",
+    "opennode": "^1.4.0",
     "os": "^0.1.2",
     "pizzicato": "^0.6.4",
     "rxjs": "~6.6.0",

@@ -87,6 +87,8 @@
         </mat-card-header>
         <mat-card-actions>
             <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
+            <input class="donate-{{i}}" type="text" placeholder="Sähköpostiosoite kuittia varten" title="Sähköpostiosoite kuittia varten" />
+            <button mat-raised-button color="primary" (click)="donate($event, 'donate-' + i)">Lahjoita 1 €</button>
         </mat-card-actions>
     </mat-card>
 </section>

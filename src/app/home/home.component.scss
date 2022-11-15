@@ -232,6 +232,11 @@ section {
                 display: block;
                 float: left;
                 width: 100%;
+                input {
+                    height: 35px;
+                    padding: 5px 10px !important;
+                }
+                input,
                 a,
                 button {
                     display: block;
@@ -241,7 +246,7 @@ section {
                     margin-left: 0;
                     width: 15.6666%;
                     margin-bottom: 5px;
-                    padding: 0 !important;
+                    padding: 0 ;
                     width: 100%;
                     svg {
                         display: block;

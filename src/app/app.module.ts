@@ -32,6 +32,7 @@ import { SocialShareComponent } from './social-share/social-share.component';
 import { FooterComponent } from './footer/footer.component';
 import { AitagsComponent } from './aitags/aitags.component';
 import { KayttoehdotComponent } from './kayttoehdot/kayttoehdot.component';
+import { OpennodeComponent } from './opennode/opennode.component';
 
 const routes: Routes = [{
   path: '', component: HomeComponent
@@ -61,7 +62,8 @@ const routes: Routes = [{
     SocialShareComponent,
     FooterComponent,
     AitagsComponent,
-    KayttoehdotComponent
+    KayttoehdotComponent,
+    OpennodeComponent
   ],
   imports: [
     BrowserModule,

@@ -29,6 +29,8 @@ var privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem');
 var certificate = fs.readFileSync(__dirname + '/cert/fullchain.pem');
 var useragent = require('express-useragent');
 var geoip = require('geoip-lite');
+const opennode = require('opennode');
+opennode.setCredentials('API KEY', 'live');
 
 var credentials = {key: privateKey, cert: certificate};
 var app = express();
@@ -277,6 +279,48 @@ app.post('/updateAiTags', (req, res) => {
     res.send({
         success: true
     })
+})
+const chargesJson = __dirname + '/processors/data/charges.json'
+let openNodechargesArr = require(__dirname + '/processors/data/charges.json')
+app.post('/opennode', (req, res) => {
+    console.log(req.body)
+    res.status(200).send({
+        success: true
+    })
+    /*
+    const crypto = require('crypto');
+
+    const received = req.body.data.charge.hashed_order;
+    const calculated = crypto.createHmac('sha256', MY_API_KEY).update(charge.id).digest('hex');
+
+    if (received === calculated) {
+        //Signature is valid
+    }
+    else {
+        //Signature is invalid. Ignore.
+    }
+    */
+})
+app.post('/donate', (req, res) => {
+    // Create a new charge
+    opennode.createCharge({
+        amount: 1,
+        currency: "EUR",
+        callback_url: "https://purkkiin.fi/opennode",
+        success_url: "https://purkkiin.fi/#/opennode",
+        auto_settle: false,
+        order_id: common.makeid(20),
+        description: 'Purkkiin.fi - Donate 1 €',
+        notif_email: req.body.email,
+        ttl: 10
+    }).then(charge => {
+        openNodechargesArr.push(charge)
+        fs.writeFileSync(chargesJson, JSON.stringify(openNodechargesArr))
+        res.send(charge);
+    })
+    .catch(error => {
+        console.error(`${error.status} | ${error.message}`);
+    });
 })
 // set port, listen for requests
 const clusterWorkerSize = os.cpus().length
