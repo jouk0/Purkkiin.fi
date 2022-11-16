@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit {
       map(value =>  {
         return this._filter(value)
     }));
-    this.backend.statisticsbserver.subscribe((response:any) => {
+    this.backend.statisticOsbserver.subscribe((response:any) => {
       if(response) {
         this.statistics = response
         this.torrents.forEach((elem:any, ind:number) => {
@@ -116,12 +116,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  donate(e:MouseEvent, inputClass:string) {
+  donate(e:MouseEvent, inputClass:string, videoName: string) {
     e.preventDefault()
     e.stopPropagation()
     let input: any = document.querySelectorAll('input.' + inputClass)[0]
     let email: any = input.value
-    this.backend.donate(email)
+    this.backend.donate(email, videoName)
   }
   updateTags(e:any, tag:any) {
     if(e.checked) {

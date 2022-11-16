@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Routes, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxVideoListPlayerModule } from 'ngx-video-list-player';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AitagsComponent } from './aitags/aitags.component';
 import { KayttoehdotComponent } from './kayttoehdot/kayttoehdot.component';
 import { OpennodeComponent } from './opennode/opennode.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 const routes: Routes = [{
   path: '', component: HomeComponent
@@ -63,7 +65,8 @@ const routes: Routes = [{
     FooterComponent,
     AitagsComponent,
     KayttoehdotComponent,
-    OpennodeComponent
+    OpennodeComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +92,8 @@ const routes: Routes = [{
     NgxGoogleAnalyticsModule.forRoot('G-VSWLPQF7GY'),
     MatCheckboxModule,
     MatSelectModule,
-    NgxVideoListPlayerModule
+    NgxVideoListPlayerModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,4 +1,4 @@
-<section class="upload">
+<section class="upload" *ngIf="!videoxi.length">
     <ul *ngIf="filesInTransition.length">
         <li *ngFor="let file of filesInTransition">{{file.name}}   
             <progress value="{{file.progress}}" max="100"></progress>
@@ -94,8 +94,10 @@
         </div>
     </article>
     <footer>
-        <label>Genre:</label>
+        <h2>Genre:</h2>
         <input type="text" (change)="changeGenre($event)" placeholder="eg. Rock" />
+        <h2>Yhteystiedot:</h2>
+        <input type="email" (change)="updateContacts($event, video)" placeholder="Lisää sähköpostiosoiteesi."  />
         <div *ngIf="video.started">
             <mat-icon *ngIf="!video.ready">hourglass_top</mat-icon>
         </div>
@@ -103,6 +105,9 @@
         <ul>
             <li *ngFor="let category of video.categories">{{category.class}}</li>
         </ul>
+        <p *ngIf="!foundMp3" class="alert">Lisää ääniraita videoon</p>
+        <p *ngIf="!foundImage" class="alert">Lisää kuva videoon</p>
+        
         <button *ngIf="!video.started" mat-button (click)="createNewVideo($event, video)">
             Lähetä
         </button>

@@ -24,18 +24,19 @@ export class BackendService {
   public jobsList: any = new BehaviorSubject(null)
   public jobsListObserver = this.jobsList.asObservable()
   public statistics: any = new BehaviorSubject(null)
-  public statisticsbserver = this.statistics.asObservable()
+  public statisticOsbserver = this.statistics.asObservable()
   constructor(
     public http: HttpClient
   ) {
     this.update()
   }
-  donate(email:string) {
+  donate(email:string, videoName:string) {
     const headers = { 
       'content-type': 'application/json'
     }
     let data = {
-      email: email
+      email: email,
+      videoName: videoName
     }
     this.http.post(this.backend + '/donate', JSON.stringify(data), {
       'headers': headers
@@ -193,7 +194,8 @@ export class BackendService {
         mp3: {
           path: ''
         },
-        genre: data.genre
+        genre: data.genre,
+        email: data.email
       }
     }
     data.files.forEach((elem:any, ind:number) => {

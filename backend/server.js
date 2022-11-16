@@ -311,9 +311,10 @@ app.post('/donate', (req, res) => {
         success_url: "https://purkkiin.fi/#/opennode",
         auto_settle: false,
         order_id: common.makeid(20),
-        description: 'Purkkiin.fi - Donate 1 €',
+        description: 'Purkkiin.fi - Lahjoitus 1 € - Videolle: ' + req.body.videoName,
+        customer_name: req.body.videoName,
         notif_email: req.body.email,
-        ttl: 10
+        ttl: 1440
     }).then(charge => {
         openNodechargesArr.push(charge)
         fs.writeFileSync(chargesJson, JSON.stringify(openNodechargesArr))

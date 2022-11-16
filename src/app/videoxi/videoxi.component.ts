@@ -30,6 +30,8 @@ export class VideoxiComponent implements OnInit {
   public detectingImageAITags: boolean = false
   public wavesurfer: any;
   public audioFilePath: string = ''
+  public foundMp3 = false
+  public foundImage = false
   constructor(
     private backend: BackendService
   ) {
@@ -308,11 +310,19 @@ export class VideoxiComponent implements OnInit {
   addNewVideoxiSecond() {
     this.files2.forEach((elem:any) => {
       this.videoxi[0].files.push(elem)
+      this.videoxi[0].files.forEach((file:any, ind:number) => {
+        if(file.file.type.indexOf('audio') !== -1) {
+          this.foundMp3 = true
+        }
+        if(file.file.type.indexOf('image') !== -1) {
+          this.foundImage = true
+        }
+      })
     })
 
     setTimeout(() => {
       this.videoxi[0].files.forEach((file:any, ind:number) => {
-        if(file.file.type === 'video/mp4') {
+        if(file.file.type.includes('video')) {
           var video:any = document.getElementById(file.id);
           video.preload = 'metadata';
           video.onloadedmetadata = function() {
@@ -333,23 +343,23 @@ export class VideoxiComponent implements OnInit {
       categories: []
     }
     this.videoxi.push(newVideoxi)
+    
+    this.videoxi[0].files.forEach((file:any, ind:number) => {
+      if(file.file.type.indexOf('audio') !== -1) {
+        this.foundMp3 = true
+      }
+      if(file.file.type.indexOf('image') !== -1) {
+        this.foundImage = true
+      }
+    })
     setTimeout(() => {
       newVideoxi.files.forEach((file:any, ind:number) => {
-        if(file.file.type === 'video/mp4') {
+        if(file.file.type.includes('video')) {
           var video:any = document.getElementById(file.id);
           video.preload = 'metadata';
           video.onloadedmetadata = function() {
             file.duration = video.duration
           }
-        }
-        if(file.file.type.indexOf('audio') !== -1) {
-          
-          setTimeout(() => {
-            let path: string = file.name
-            console.log('Path: ', path)
-            console.log(file)
-            this.wavesurfer.load(path);
-          }, 2000)
         }
       })
     }, 1000)
@@ -361,10 +371,25 @@ export class VideoxiComponent implements OnInit {
   createNewVideo(e:MouseEvent, newVideoxi:any) {
     e.preventDefault()
     e.stopPropagation()
-    newVideoxi.ready = false
-    newVideoxi.started = true
-    newVideoxi.genre = this.genre
-    this.backend.createVideoxi(newVideoxi)
+    this.foundMp3 = false
+    this.foundImage = false
+    newVideoxi.files.forEach((file:any, ind:number) => {
+      if(file.file.type.indexOf('audio') !== -1) {
+        this.foundMp3 = true
+      }
+      if(file.file.type.indexOf('image') !== -1) {
+        this.foundImage = true
+      }
+    })
+    if(this.foundMp3 && this.foundImage) {
+      newVideoxi.ready = false
+      newVideoxi.started = true
+      newVideoxi.genre = this.genre
+      this.backend.createVideoxi(newVideoxi)
+    }
+  }
+  updateContacts(e:any, video: any) {
+    video.email = e.target.value
   }
   changeImageText(e:any, file:any) {
     e.preventDefault()

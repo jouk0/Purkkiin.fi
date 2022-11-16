@@ -1,0 +1,34 @@
+section {
+    display: block;
+    margin: 0 auto;
+    width: 700px;
+    header {
+        display: block;
+        float: left;
+        width: 100%;
+        h1 {
+            display: block;
+            float: left;
+            width: 100%;
+            text-align: center;
+            background-color: #1a1313;
+            color: white;
+        }
+    }
+    article {
+        display: block;
+        float: left;
+        width: 100%;
+        header {
+            display: block;
+            float: left;
+            width: 100%;
+            h1 {
+                display: block;
+                float: left;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}

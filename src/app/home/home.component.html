@@ -19,7 +19,7 @@
     </ul>
     <app-videoxi></app-videoxi>
 </div>
-<div class="filters">
+<div class="filters" *ngIf="!showUpload">
     <header>
         <h1>Filteröinti</h1>
     </header>
@@ -63,7 +63,7 @@
         </li>
       </ul>
 </div>
-<section class="videoList">
+<section class="videoList" *ngIf="!showUpload">
     <header>
         <h1>Kaikki videot soitin</h1>
     </header>
@@ -71,24 +71,25 @@
         
     </ngx-video-list-player>
 </section>
-<section class="card hmedia" [ngClass]="{'hidden':!torrent.show}" *ngFor="let torrent of torrents; let i = index">
-
-    <mat-card class="example-card" class="torrent-{{i}}" *ngIf="torrent.show">
-        <mat-card-content>
-            <div class="video">
-                <video class="player" data="{{backend.backend}}/videoLibrary/{{torrent.filename}}" title="{{torrent.name}}" controls controlsList="nodownload" (play)="playEvent($event, torrent)">
-                    <source name="movie" src="{{backend.backend}}/videoLibrary/{{torrent.filename}}" type="video/mp4">
-                </video>
-            </div>
-        </mat-card-content>
-        <mat-card-header>
-            <mat-card-title class="entry-title fn" rel="bookmark">{{torrent.name}}</mat-card-title>
-            <mat-card-subtitle class="entry-content">Julkaistu: <span class="updated" title="{{torrent.date}}">{{torrent.humanDate}}</span> | Koko: {{humanFileSize(torrent.size)}} | Soittoja: {{(torrent.plays) ? torrent.plays : 0}} | Genre: {{(torrent.genre) ? torrent.genre : ''}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-actions>
-            <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
-            <input class="donate-{{i}}" type="text" placeholder="Sähköpostiosoite kuittia varten" title="Sähköpostiosoite kuittia varten" />
-            <button mat-raised-button color="primary" (click)="donate($event, 'donate-' + i)">Lahjoita 1 €</button>
-        </mat-card-actions>
-    </mat-card>
-</section>
+<div *ngIf="!showUpload">
+    <section class="card hmedia" [ngClass]="{'hidden':!torrent.show}" *ngFor="let torrent of torrents; let i = index">
+        <mat-card class="example-card" class="torrent-{{i}}" *ngIf="torrent.show">
+            <mat-card-content>
+                <div class="video">
+                    <video class="player" data="{{backend.backend}}/videoLibrary/{{torrent.filename}}" title="{{torrent.name}}" controls controlsList="nodownload" (play)="playEvent($event, torrent)">
+                        <source name="movie" src="{{backend.backend}}/videoLibrary/{{torrent.filename}}" type="video/mp4">
+                    </video>
+                </div>
+            </mat-card-content>
+            <mat-card-header>
+                <mat-card-title class="entry-title fn" rel="bookmark">{{torrent.name}}</mat-card-title>
+                <mat-card-subtitle class="entry-content">Julkaistu: <span class="updated" title="{{torrent.date}}">{{torrent.humanDate}}</span> | Koko: {{humanFileSize(torrent.size)}} | Soittoja: {{(torrent.plays) ? torrent.plays : 0}} | Genre: {{(torrent.genre) ? torrent.genre : ''}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+                <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
+                <input class="donate-{{i}}" type="text" placeholder="Sähköpostiosoite kuittia varten" title="Sähköpostiosoite kuittia varten" />
+                <button mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">Lahjoita 1 €</button>
+            </mat-card-actions>
+        </mat-card>
+    </section>
+</div>

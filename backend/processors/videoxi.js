@@ -9,7 +9,7 @@ const torrentsJson = __dirname + '/data/torrents.json'
 const videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
 const imageSetup = require('./images')
 const videoSetup = require('./videos')
-const noiseSetup = require('./noise')
+//const noiseSetup = require('./noise')
 
 videoQueue.process(async (job, done) => {
     job.progress(5);
@@ -49,15 +49,17 @@ videoQueue.process(async (job, done) => {
             mp4: mp4Path,
             clips: clips
         }
-        const buffer = fs.readFileSync(newVideo.mp3)
         let duration
+        let mp3LenghtInSeconds = 0
         if(newVideo.mp3.includes('.flac')) {
             let stream = fs.createReadStream(newVideo.mp3)
             duration = await getAudioDurationInSeconds(stream)
+            mp3LenghtInSeconds = duration
         } else {
+            const buffer = fs.readFileSync(newVideo.mp3)
             duration = getMP3Duration(buffer)
+            mp3LenghtInSeconds = duration/1000
         }
-        let mp3LenghtInSeconds = duration/1000
         let editSpec = {
             width: 512,
             height: 256,
@@ -88,6 +90,7 @@ videoQueue.process(async (job, done) => {
             }
         })
         job.progress(10);
+        console.log(editSpec)
         await editly(editSpec)
         .catch(console.error);
         
@@ -100,7 +103,8 @@ videoQueue.process(async (job, done) => {
             filename: folder + '/' + songNameForHD + '.mp4',
             date: new Date(),
             genre: job.data.video.genre,
-            categories: categories
+            categories: categories,
+            email: job.data.video.email
         }
         let torrents = JSON.parse(fs.readFileSync(torrentsJson))
         torrents.push(data)
