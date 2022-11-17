@@ -3,7 +3,6 @@ import { BackendService } from '../backend.service'
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { IVideoConfig } from "ngx-video-list-player";
 
@@ -35,8 +34,7 @@ export class HomeComponent implements OnInit {
   public tagsEnabled: Array<any> = []
   public showVideoList: boolean = false
   constructor(
-    public backend: BackendService,
-    private $gaService: GoogleAnalyticsService
+    public backend: BackendService
   ) {
     this.backend.videoTorrentObserver.subscribe((response:any) => {
       if(response) {
@@ -205,7 +203,6 @@ export class HomeComponent implements OnInit {
     })
   }
   playEvent(e:any, torrent:any) {
-    this.$gaService.event(torrent.name, 'videoList', 'Play video');
     this.backend.statisticsForVideo(torrent)
   }
   private _filter(value: string): string[] {

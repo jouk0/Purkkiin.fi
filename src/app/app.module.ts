@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { NgxGoogleAnalyticsModule } from 'ngx-google-analytics';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Routes, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
@@ -91,7 +90,6 @@ const routes: Routes = [{
     }),
     MatDialogModule,
     MatAutocompleteModule,
-    NgxGoogleAnalyticsModule.forRoot('G-VSWLPQF7GY'),
     MatCheckboxModule,
     MatSelectModule,
     NgxVideoListPlayerModule,

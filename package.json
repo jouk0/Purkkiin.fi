@@ -46,7 +46,6 @@
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "music-metadata-browser": "^2.5.7",
-    "ngx-google-analytics": "^13.0.1",
     "ngx-video-list-player": "^13.0.2",
     "opennode": "^1.4.0",
     "os": "^0.1.2",
