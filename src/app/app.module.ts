@@ -35,6 +35,7 @@ import { AitagsComponent } from './aitags/aitags.component';
 import { KayttoehdotComponent } from './kayttoehdot/kayttoehdot.component';
 import { OpennodeComponent } from './opennode/opennode.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { JoblistComponent } from './joblist/joblist.component';
 
 const routes: Routes = [{
   path: '', component: HomeComponent
@@ -66,7 +67,8 @@ const routes: Routes = [{
     AitagsComponent,
     KayttoehdotComponent,
     OpennodeComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    JoblistComponent
   ],
   imports: [
     BrowserModule,

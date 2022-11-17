@@ -67,7 +67,7 @@
     <header>
         <h1>Kaikki videot soitin</h1>
     </header>
-    <ngx-video-list-player *ngIf="showVideoList" [config]="config">
+    <ngx-video-list-player  (onTimeUpdate)="onTimeUpdate()" (onCanPlay)="onCanPlay()" (onLoadedMetadata)="onLoadedMetadata()" *ngIf="showVideoList" [config]="config">
         
     </ngx-video-list-player>
 </section>

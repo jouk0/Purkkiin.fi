@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
             artist: elem.name,
             isYoutubeVideo: false
           })
-          console.log(this.config)
           let date = new Date(elem.date)
           elem.humanDate = date.getDate() + '.' + (date.getMonth()+1) + '.' + date.getFullYear()
           this.options.push(elem.name)
@@ -271,5 +270,17 @@ export class HomeComponent implements OnInit {
 
 
     return bytes.toFixed(dp) + ' ' + units[u];
+  }
+  
+  onTimeUpdate() {
+      console.log("Event: onTimeUpdate");
+  }
+
+  onCanPlay() {
+      console.log("Event: onCanPlay")
+  }
+
+  onLoadedMetadata() {
+      console.log("Event: onLoadedMetadata")
   }
 }
