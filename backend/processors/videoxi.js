@@ -64,7 +64,7 @@ videoQueue.process(async (job, done) => {
             width: 512,
             height: 256,
             outPath: newVideo.mp4,
-            fps: 25,
+            fps: 11,
             clips: newVideo.clips,
             audioNorm: { 
                 enable: true, 
@@ -93,25 +93,40 @@ videoQueue.process(async (job, done) => {
         console.log(editSpec)
         await editly(editSpec)
         .catch(console.error);
-        
-        job.progress(80);
-        var stats = fs.statSync(newVideo.mp4)
-        let data = {
-            type: 'video/mp4',
-            name: songName,
-            size: stats.size,
-            filename: folder + '/' + songNameForHD + '.mp4',
-            date: new Date(),
-            genre: job.data.video.genre,
-            categories: categories,
-            email: job.data.video.email
+        const hbjs = require('handbrake-js')
+
+        const options = {
+                input: folder + '/' + songNameForHD + '.mp4',
+                output: folder + '/' + songNameForHD + '.mkv'
         }
-        let torrents = JSON.parse(fs.readFileSync(torrentsJson))
-        torrents.push(data)
-        await fs.writeFileSync(torrentsJson, JSON.stringify(torrents))
-        xvfb.stop();
-        job.progress(100);
-        done();
+        job.progress(50)
+        hbjs.spawn(options)
+        .on('error', (err) => {
+            console.error(err)
+            paha(err)
+        })
+        .on('output', console.log)
+        .on('complete', async () => {
+            job.progress(80);
+            var stats = fs.statSync(newVideo.mp4)
+            let data = {
+                type: 'video/mp4',
+                name: songName,
+                size: stats.size,
+                filename: folder + '/' + songNameForHD + '.mp4',
+                matroskaVideo: '/' + songNameForHD + '.mkv',
+                date: new Date(),
+                genre: job.data.video.genre,
+                categories: categories,
+                email: job.data.video.email
+            }
+            let torrents = JSON.parse(fs.readFileSync(torrentsJson))
+            torrents.push(data)
+            await fs.writeFileSync(torrentsJson, JSON.stringify(torrents))
+            xvfb.stop();
+            job.progress(100);
+            done();
+        })
     })
 });
 

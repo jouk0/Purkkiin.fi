@@ -304,25 +304,32 @@ app.post('/opennode', (req, res) => {
 })
 app.post('/donate', (req, res) => {
     // Create a new charge
-    opennode.createCharge({
-        amount: 1,
-        currency: "EUR",
-        callback_url: "https://purkkiin.fi/opennode",
-        success_url: "https://purkkiin.fi/#/opennode",
-        auto_settle: false,
-        order_id: common.makeid(20),
-        description: 'Purkkiin.fi - Lahjoitus 1 € - Videolle: ' + req.body.videoName,
-        customer_name: req.body.videoName,
-        notif_email: req.body.email,
-        ttl: 1440
-    }).then(charge => {
-        openNodechargesArr.push(charge)
-        fs.writeFileSync(chargesJson, JSON.stringify(openNodechargesArr))
-        res.send(charge);
-    })
-    .catch(error => {
-        console.error(`${error.status} | ${error.message}`);
-    });
+    if(req.body.email) {
+        opennode.createCharge({
+            amount: 1,
+            currency: "EUR",
+            callback_url: "https://purkkiin.fi/opennode",
+            success_url: "https://purkkiin.fi/#/opennode",
+            auto_settle: false,
+            order_id: common.makeid(20),
+            description: 'Purkkiin.fi - Lahjoitus 1 € - Videolle: ' + req.body.videoName,
+            customer_name: req.body.videoName,
+            notif_email: req.body.email,
+            ttl: 1440
+        }).then(charge => {
+            openNodechargesArr.push(charge)
+            fs.writeFileSync(chargesJson, JSON.stringify(openNodechargesArr))
+            res.send(charge);
+        })
+        .catch(error => {
+            console.error(`${error.status} | ${error.message}`);
+        });
+    } else {
+        res.send({
+            success: false,
+            error: 'Invalid email address.'
+        });
+    }
 })
 // set port, listen for requests
 const clusterWorkerSize = os.cpus().length
