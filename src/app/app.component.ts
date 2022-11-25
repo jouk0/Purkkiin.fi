@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { BackendService } from './backend.service'
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +13,9 @@ export class AppComponent {
   public jobsCount: number = 0
   public jobsCurrent: number = 0
   public showLogin: boolean = false
-
+  
   constructor(
-    private backend: BackendService,
-    private $gaService: GoogleAnalyticsService
+    private backend: BackendService
   ) {
     this.backend.jobsObserver.subscribe((response:any) => {
       if(response) {
@@ -34,7 +32,6 @@ export class AppComponent {
     this.login()
   }
   update() {
-    this.$gaService.event('Päivitä', 'videoList', 'Update list');
     this.backend.update()
   }
   humanFileSize(bytes:any, si=false, dp=1) {

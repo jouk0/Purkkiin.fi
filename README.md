@@ -1,29 +1,10 @@
-# Purkkiin.fi
+# PurkkiinFiAngular15
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
-
-## From start
-
-Run `npm install`.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.1.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-When developing please change environment configure to your own backend server address.
-
-## Backend server
-
-Fill out .env file.
-
-To build production run `npm run production`. Move files from dist/mp3ToVideo to backend mp3ToVideo folder.
-
-To create https certificates run `certbot certonly` and move privkey.pem and fullchain.pem to backend cert folder.
-
-Run `cd backend` and run `node server.js` on the backend folder.
-
-## Dependencies
-    * Redis server
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -31,9 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project.
-Run `npm run production` to build production build.
-The build artifacts will be stored in the `dist/` directory.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 

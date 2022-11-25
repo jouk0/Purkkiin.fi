@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'mp3ToVideo'`, () => {
+  it(`should have as title 'Purkkiin.fiAngular15'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('mp3ToVideo');
+    expect(app.title).toEqual('Purkkiin.fiAngular15');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('mp3ToVideo app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('Purkkiin.fiAngular15 app is running!');
   });
 });

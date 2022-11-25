@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../backend.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 @Component({
   selector: 'app-social-share',
@@ -17,7 +16,6 @@ export class SocialShareComponent implements OnInit {
   constructor(
     public backend: BackendService,
     private route: ActivatedRoute,
-    private $gaService: GoogleAnalyticsService
   ) {
     this.backend.update()
     this.backend.videoTorrentObserver.subscribe((response:any) => {
@@ -50,7 +48,6 @@ export class SocialShareComponent implements OnInit {
     this.showVideo = false
   }
   playEvent(event:any, torrent:any) {
-    this.$gaService.event(this.videoObject.name, 'videoList', 'Play video');
     this.backend.statisticsForVideo(torrent)
   }
 

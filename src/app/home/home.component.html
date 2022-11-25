@@ -1,11 +1,14 @@
 
-<button *ngIf="!showUpload"  class="showButton open rubber" (click)="show($event)">
-    <span>🎼Julkaise oma video 🎼</span>
-    <svg viewBox="-5 -5 110 110" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,0 C0,0 100,0 100,0 C100,0 100,100 100,100 C100,100 0,100 0,100 C0,100 0,0 0,0"/>
-    </svg>
-</button>
-<button *ngIf="showUpload" class="showButton" mat-button color="primary" (click)="show($event)">Videon luonti</button>
+<section class="banner">
+    <header><h1>Bändien videoiden koti</h1></header>
+    <button *ngIf="!showUpload"  class="showButton open rubber" (click)="show($event)">
+        <span>🎼Julkaise oma video 🎼</span>
+        <svg viewBox="-5 -5 110 110" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,0 C0,0 100,0 100,0 C100,0 100,100 100,100 C100,100 0,100 0,100 C0,100 0,0 0,0"/>
+        </svg>
+    </button>
+    <button *ngIf="showUpload" class="showButton" mat-button color="primary" (click)="show($event)">Takaisin</button>
+</section>
 <div class="info" *ngIf="showUpload">
     <header>
         <h1>Nopea ohje</h1>
@@ -19,7 +22,7 @@
     </ul>
     <app-videoxi></app-videoxi>
 </div>
-<div class="filters" *ngIf="!showUpload">
+<div class="filters" *ngIf="!showUpload && false">
     <header>
         <h1>Filteröinti</h1>
     </header>
@@ -63,20 +66,15 @@
         </li>
       </ul>
 </div>
-<section class="videoList" *ngIf="!showUpload">
+<div class="videolista" *ngIf="!showUpload">
     <header>
-        <h1>Kaikki videot soitin</h1>
+        <h1>Julkaistut videot</h1>
     </header>
-    <ngx-video-list-player  (onTimeUpdate)="onTimeUpdate()" (onCanPlay)="onCanPlay()" (onLoadedMetadata)="onLoadedMetadata()" *ngIf="showVideoList" [config]="config">
-        
-    </ngx-video-list-player>
-</section>
-<div *ngIf="!showUpload">
     <section class="card hmedia" [ngClass]="{'hidden':!torrent.show}" *ngFor="let torrent of torrents; let i = index">
         <mat-card class="example-card" class="torrent-{{i}}" *ngIf="torrent.show">
             <mat-card-content>
                 <div class="video">
-                    <video class="player" data="{{backend.backend}}/videoLibrary/{{torrent.filename}}" title="{{torrent.name}}" controls controlsList="nodownload" (play)="playEvent($event, torrent)">
+                    <video class="player" data="{{backend.backend}}/videoLibrary/{{torrent.filename}}" title="{{torrent.name}}" controls controlsList="nodownload" (play)="playEvent($event, torrent, 'donate-' + i, torrent.name)">
                         <source name="movie" src="{{backend.backend}}/videoLibrary/{{torrent.filename}}" type="video/mp4">
                     </video>
                 </div>
@@ -87,8 +85,10 @@
             </mat-card-header>
             <mat-card-actions>
                 <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
-                <input class="donate-{{i}}" type="text" placeholder="Sähköpostiosoite kuittia varten" title="Sähköpostiosoite kuittia varten" />
+                <input value="{{email}}" [ngClass]="{'hide': email !== ''}" class="donate-{{i}}" (change)="updateEmail($event, 'donate-' + i)" type="text" placeholder="Sähköpostiosoite kuittia varten" title="Sähköpostiosoite kuittia varten" />
                 <button mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">Lahjoita 1 €</button>
+                <button mat-raised-button color="primary" (click)="downloadMKV($event, torrent, 'donate-' + i, torrent.name)">Lataa .mkv</button>
+                <button mat-raised-button color="primary" (click)="downloadMP4($event, torrent, 'donate-' + i, torrent.name)">Lataa .mp4</button>
             </mat-card-actions>
         </mat-card>
     </section>

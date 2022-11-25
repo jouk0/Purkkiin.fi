@@ -3,8 +3,7 @@ import { BackendService } from '../backend.service'
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { IVideoConfig } from "ngx-video-list-player";
+import * as EmailValidator from 'email-validator';
 
 declare const cocoSsd: any;
 
@@ -14,11 +13,6 @@ declare const cocoSsd: any;
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public config: IVideoConfig = {
-    isVideoLoader: true,
-    isAutoPlay: true,
-    sources: []
-  }
   public torrents: Array<any> = []
   public showUpload: boolean = false
   public myControl = new FormControl();
@@ -33,6 +27,7 @@ export class HomeComponent implements OnInit {
   public tagsArr: Array<any> = [];
   public tagsEnabled: Array<any> = []
   public showVideoList: boolean = false
+  public email: string = ''
   constructor(
     public backend: BackendService
   ) {
@@ -44,12 +39,6 @@ export class HomeComponent implements OnInit {
         this.torrents.forEach((elem:any, ind:number) => {
           elem.show = true
           elem.name = elem.name.replace(/_/gi, ' ')
-          this.config.sources.push({
-            src: this.backend.backend + '/videoLibrary/' + elem.filename,
-            videoName: elem.name,
-            artist: elem.name,
-            isYoutubeVideo: false
-          })
           let date = new Date(elem.date)
           elem.humanDate = date.getDate() + '.' + (date.getMonth()+1) + '.' + date.getFullYear()
           this.options.push(elem.name)
@@ -113,12 +102,54 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  updateEmail(e:Event, inputClass: string) {
+    let input: any = document.querySelectorAll('input.' + inputClass)[0]
+    input.classList.remove('notvalid')
+    let email: any = input.value
+    if(EmailValidator.validate(email)) {
+      this.email = email
+    } else {
+      input.classList.add('notvalid')
+    }
+  }
+  downloadMP4(e:MouseEvent, torrent:any, inputClass:string, videoName: string) {
+    e.preventDefault()
+    e.stopPropagation()
+    let input: any = document.querySelectorAll('input.' + inputClass)[0]
+    input.classList.remove('notvalid')
+    let email: any = input.value
+    if(EmailValidator.validate(email)) {
+      let torrentUrl: string = this.backend.backend + '/videoLibrary/' + torrent.filename
+      window.open(torrentUrl, '_blank')
+      this.backend.donate(email, videoName)
+    } else {
+      input.classList.add('notvalid')
+    }
+  }
+  downloadMKV(e:MouseEvent, torrent:any, inputClass:string, videoName: string) {
+    e.preventDefault()
+    e.stopPropagation()
+    let input: any = document.querySelectorAll('input.' + inputClass)[0]
+    let email: any = input.value
+    if(EmailValidator.validate(email)) {
+      let torrentUrl: string = this.backend.backend + '/videoLibrary/' + torrent.matroskaVideo.replace('C:\\projektit\\MatroskaTesti/videos/', '')
+      window.open(torrentUrl, '_blank')
+      input.classList.remove('notvalid')
+      this.backend.donate(email, videoName)
+    } else {
+      input.classList.add('notvalid')
+    }
+  }
   donate(e:MouseEvent, inputClass:string, videoName: string) {
     e.preventDefault()
     e.stopPropagation()
     let input: any = document.querySelectorAll('input.' + inputClass)[0]
     let email: any = input.value
-    this.backend.donate(email, videoName)
+    if(EmailValidator.validate(email)) {
+      this.backend.donate(email, videoName)
+    } else {
+      input.classList.add('notvalid')
+    }
   }
   updateTags(e:any, tag:any) {
     if(e.checked) {
@@ -202,7 +233,15 @@ export class HomeComponent implements OnInit {
       }
     })
   }
-  playEvent(e:any, torrent:any) {
+  playEvent(e:any, torrent:any, inputClass:string, videoName: string) {
+    let input: any = document.querySelectorAll('input.' + inputClass)[0]
+    let email: any = input.value
+    input.classList.remove('notvalid')
+    if(EmailValidator.validate(email)) {
+      this.backend.donate(email, videoName)
+    } else {
+      input.classList.add('notvalid')
+    }
     this.backend.statisticsForVideo(torrent)
   }
   private _filter(value: string): string[] {

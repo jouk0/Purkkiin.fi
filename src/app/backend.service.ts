@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from './../environments/environment';
+import * as EmailValidator from 'email-validator';
 
 declare const Essentia: any;
 declare const EssentiaWASM: any;
@@ -31,19 +32,21 @@ export class BackendService {
     this.update()
   }
   donate(email:string, videoName:string) {
-    const headers = { 
-      'content-type': 'application/json'
+    if(EmailValidator.validate(email)) {
+      const headers = { 
+        'content-type': 'application/json'
+      }
+      let data = {
+        email: email,
+        videoName: videoName
+      }
+      this.http.post(this.backend + '/donate', JSON.stringify(data), {
+        'headers': headers
+      }).subscribe((response: any) => {
+        console.log(response)
+        window.open(response.hosted_checkout_url, '_blank')
+      })
     }
-    let data = {
-      email: email,
-      videoName: videoName
-    }
-    this.http.post(this.backend + '/donate', JSON.stringify(data), {
-      'headers': headers
-    }).subscribe((response: any) => {
-      console.log(response)
-      window.open(response.hosted_checkout_url, '_blank')
-    })
   }
   updateAiTag(path:string, categories:Array<any>) {
     

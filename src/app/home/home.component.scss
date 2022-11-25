@@ -61,8 +61,11 @@ button {
         display: block;
         margin: 0 auto;
         background-color: white;
-        color: white;
         font-size: 25px;
+        color: #303030;
+        &.rubber {
+            color: white;
+        }
         &.mat-button {
             background-color: #303030 !important;
         }
@@ -72,6 +75,23 @@ button {
     }
 }
 div {
+    &.videolista {
+        display: block;
+        float: left;
+        width: 100%;
+        header {
+            display: block;
+            float: left;
+            width: 100%;
+            h1 {
+                display: block;
+                float: left;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #303030;
+            }
+        }
+    }
     &.info {
         display: block;
         width: 50%;
@@ -153,6 +173,7 @@ div {
                     mat-checkbox {
                         width: 100%;
                         padding: 10px 20px;
+                        color: white;
                     }
                 }
             }
@@ -160,6 +181,31 @@ div {
     }
 }
 section {
+    &.banner {
+        display: block;
+        float: left;
+        width: 100%;
+        margin: 0 0 20px;
+        padding: 20px;
+        background: transparent url('/assets/banner.jpg') center center no-repeat;
+        background-size: cover;
+        header {
+            display: block;
+            float: left;
+            width: 100%;
+            h1 {
+                display: block;
+                float: left;
+                width: 100%;
+                text-align: center;
+                color: white;
+                background-color: #303030a9;
+            }
+        }
+        button {
+            border-radius: 20px;
+        }
+    }
     &.videoList {
         display: block;
         float: left;
@@ -235,6 +281,14 @@ section {
                 input {
                     height: 35px;
                     padding: 5px 10px !important;
+                    &.hide {
+                        display: none;
+                        visibility: hidden;
+                    }
+                    &.notvalid {
+                        border-color: red;
+                        color: red;
+                    }
                 }
                 input,
                 a,

@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,11 +13,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Routes, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
-import { NgxVideoListPlayerModule } from 'ngx-video-list-player';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UploadComponent } from './upload/upload.component';
@@ -51,6 +51,7 @@ const routes: Routes = [{
 }, {
   path: '**', component: FourOFourComponent
 }];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,7 +73,6 @@ const routes: Routes = [{
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes, { useHash: true }),
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
@@ -82,21 +82,20 @@ const routes: Routes = [{
     NgxFileUploaderModule.forRoot(),
     MatInputModule,
     MatFormFieldModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
     MatDialogModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatSelectModule,
-    NgxVideoListPlayerModule,
-    NgxChartsModule
+    NgxChartsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],
-  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class AppModule { }

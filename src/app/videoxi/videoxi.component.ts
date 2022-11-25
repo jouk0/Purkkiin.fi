@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FileUploadService, FileUploader } from '@uniprank/ngx-file-uploader';
 import { BackendService } from '../backend.service'
 import { environment } from '../../environments/environment';
