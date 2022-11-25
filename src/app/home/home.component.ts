@@ -4,8 +4,15 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as EmailValidator from 'email-validator';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { CommentDialog } from './commentDialog/commentDialog'
 
 declare const cocoSsd: any;
+
+export interface DialogData {
+  animal: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -29,7 +36,8 @@ export class HomeComponent implements OnInit {
   public showVideoList: boolean = false
   public email: string = ''
   constructor(
-    public backend: BackendService
+    public backend: BackendService,
+    public dialog: MatDialog
   ) {
     this.backend.videoTorrentObserver.subscribe((response:any) => {
       if(response) {
@@ -101,6 +109,18 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  openComments(e:MouseEvent, torrent:any, commentClass: string) {
+    e.preventDefault()
+    e.stopPropagation()
+    const dialogRef = this.dialog.open(CommentDialog, {
+      width: '450px',
+      data: { torrent: torrent },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
   updateEmail(e:Event, inputClass: string) {
     let input: any = document.querySelectorAll('input.' + inputClass)[0]

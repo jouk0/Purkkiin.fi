@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Video: {{data.torrent.name}}</h1>
+<div mat-dialog-content>
+  <p>Kommentit</p>
+  <div *ngFor="let comment of videoComments">
+    <span class="nick"><strong>Nick:</strong> {{comment.nick}}</span>
+    <span class="comment"><strong>Kommentti:</strong> {{comment.comment}}</span>
+    <span class="date"><strong>Päivämäärä:</strong> {{comment.date}}</span>
+  </div>
+  <h3 *ngIf="!videoComments.length">Ole ensimmäinen kommentoija</h3>
+  <div>
+    <h2>Lisää kommentti</h2>
+    <label>Oma nimi:</label>
+    <input type="text" placeholder="Oma nimesi" #nick />
+    <h2>Kommentti:</h2>
+    <textarea placeholder="Kommmentti" #kommentti>
+    </textarea>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick($event)">Sulje</button>
+  <button mat-button (click)="lahetaKommentti($event, nick, kommentti)" cdkFocusInitial>Lähetä kommentti</button>
+</div>

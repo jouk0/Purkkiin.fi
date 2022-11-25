@@ -1,0 +1,52 @@
+h1 {
+    display: block;
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+div {
+    display: block;
+    float: left;
+    width: 100%;
+    p {
+        display: block;
+        float: left;
+        width: 100%;
+    }
+    div {
+        display: block;
+        float: left;
+        width: 100%;
+        span {
+            display: block;
+            float: left;
+            width: 100%;
+            &.nick {
+
+            }
+            &.comment {
+
+            }
+            &.date {
+
+            }
+        }
+        h2 {
+            display: block;
+            float: left;
+            width: 100%;
+            text-align: left;
+        }
+        input {
+            display: block;
+            float: left;
+            width: 100%;
+        }
+        textarea {
+            display: block;
+            float: left;
+            width: 100%;
+            height: 200px;
+        }
+    }
+}

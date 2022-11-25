@@ -89,6 +89,7 @@
                 <button mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">Lahjoita 1 €</button>
                 <button mat-raised-button color="primary" (click)="downloadMKV($event, torrent, 'donate-' + i, torrent.name)">Lataa .mkv</button>
                 <button mat-raised-button color="primary" (click)="downloadMP4($event, torrent, 'donate-' + i, torrent.name)">Lataa .mp4</button>
+                <button mat-raised-button color="primary" (click)="openComments($event, torrent, 'comment-' + i)">Kommentoi</button>
             </mat-card-actions>
         </mat-card>
     </section>

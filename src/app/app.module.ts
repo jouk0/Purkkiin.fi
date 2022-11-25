@@ -35,7 +35,7 @@ import { KayttoehdotComponent } from './kayttoehdot/kayttoehdot.component';
 import { OpennodeComponent } from './opennode/opennode.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { JoblistComponent } from './joblist/joblist.component';
-
+import { CommentDialog } from './home/commentDialog/commentDialog'
 const routes: Routes = [{
   path: '', component: HomeComponent
 }, {
@@ -68,7 +68,8 @@ const routes: Routes = [{
     KayttoehdotComponent,
     OpennodeComponent,
     StatisticsComponent,
-    JoblistComponent
+    JoblistComponent,
+    CommentDialog
   ],
   imports: [
     BrowserModule,

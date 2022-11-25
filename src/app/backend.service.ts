@@ -26,10 +26,39 @@ export class BackendService {
   public jobsListObserver = this.jobsList.asObservable()
   public statistics: any = new BehaviorSubject(null)
   public statisticOsbserver = this.statistics.asObservable()
+  public kommentit: any = new BehaviorSubject(null)
+  public kommentitOsbserver = this.kommentit.asObservable()
   constructor(
     public http: HttpClient
   ) {
     this.update()
+  }
+  haeKommentit() {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    this.http.get(this.backend + '/kommentit', {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+      this.kommentit.next(response)
+    })
+  }
+  lahetaKommentti(torrent:any, nick:string, comment: string) {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    let data = {
+      nick: nick,
+      comment: comment,
+      date: new Date().getTime(),
+      torrentName: torrent.name
+    }
+    this.http.post(this.backend + '/kommentit', JSON.stringify(data), {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+    })
   }
   donate(email:string, videoName:string) {
     if(EmailValidator.validate(email)) {

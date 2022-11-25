@@ -302,6 +302,20 @@ app.post('/opennode', (req, res) => {
     }
     */
 })
+let kommentit = require(__dirname + '/kommentit/kommentit.json')
+app.get('/kommentit', (req, res) => {
+    res.send({
+        success: true,
+        kommentit: kommentit
+    });
+})
+app.post('/kommentit', (req, res) => {
+    kommentit.push(req.body)
+    fs.writeFileSync(__dirname + '/kommentit/kommentit.json', JSON.stringify(kommentit))
+    res.send({
+        success: true
+    });
+})
 app.post('/donate', (req, res) => {
     // Create a new charge
     if(req.body.email) {
