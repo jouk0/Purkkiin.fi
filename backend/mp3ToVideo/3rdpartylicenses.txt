@@ -735,6 +735,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+ngx-star-rating
+MIT
+
 rxjs
 Apache-2.0
                                Apache License
