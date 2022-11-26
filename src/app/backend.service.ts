@@ -28,10 +28,40 @@ export class BackendService {
   public statisticOsbserver = this.statistics.asObservable()
   public kommentit: any = new BehaviorSubject(null)
   public kommentitOsbserver = this.kommentit.asObservable()
+  public arvostelut: any = new BehaviorSubject(null)
+  public arvostelutOsbserver = this.arvostelut.asObservable()
+  
   constructor(
     public http: HttpClient
   ) {
     this.update()
+  }
+  haeArvostelut() {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    this.http.get(this.backend + '/arvostelut', {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+      this.arvostelut.next(response)
+    })
+  }
+  lahetaArvostelut(torrent:any, rating: number) {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    let data = {
+      rating: rating,
+      date: new Date().getTime(),
+      torrentName: torrent.name
+    }
+    this.http.post(this.backend + '/arvostelut', JSON.stringify(data), {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+      this.haeArvostelut()
+    })
   }
   haeKommentit() {
     const headers = { 

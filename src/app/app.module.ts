@@ -15,6 +15,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
+import { NgxStarRatingModule } from 'ngx-star-rating';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -93,7 +96,10 @@ const routes: Routes = [{
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    NgxStarRatingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

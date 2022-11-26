@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" xmlns:xhtml="http://www.w3.org/1999/xhtml"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {{#each torrents}}
+        <url>
+            <loc>https://purkkiin.fi/video/{{@index}}</loc>
+            <lastmod>{{date}}</lastmod>
+            <video:video>
+                <video:title>{{name}}</video:title>
+                <video:content_loc>https://purkkiin.fi/videoLibrary/{{filename}}</video:content_loc>
+            </video:video>
+            <video:video>
+                <video:title>{{name}}</video:title>
+                <video:content_loc>https://purkkiin.fi/videoLibrary/{{matroskaVideo}}</video:content_loc>
+            </video:video>
+        </url>
+    {{/each}}
+</urlset>

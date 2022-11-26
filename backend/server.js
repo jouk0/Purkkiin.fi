@@ -97,8 +97,21 @@ app.use((request, response, next) => {
     }
     next();
 })
+function shouldCompress (req, res) {
+    if(req.originalUrl.includes('sitemap')) {
+        return false
+    }
+    if (req.headers['x-no-compression']) {
+      // don't compress responses with this request header
+      return false
+    }
+  
+    // fallback to standard filter function
+    return compression.filter(req, res)
+}
 app.use(compression({
-    level: 9
+    level: 9,
+    filter: shouldCompress
 }))
 app.use(useragent.express());
 app.use(limiter);
@@ -316,6 +329,35 @@ app.post('/kommentit', (req, res) => {
         success: true
     });
 })
+let arvostelut = require(__dirname + '/arvostelut/arvostelut.json')
+app.get('/arvostelut', (req, res) => {
+    res.send({
+        success: true,
+        arvostelut: arvostelut
+    });
+})
+app.post('/arvostelut', (req, res) => {
+    kommentit.push(req.body)
+    fs.writeFileSync(__dirname + '/arvostelut/arvostelut.json', JSON.stringify(kommentit))
+    res.send({
+        success: true
+    });
+})
+const Handlebars = require("handlebars");
+const sitemapTemplate = fs.readFileSync('./sitemap/sitemap-template.html')
+app.get('/sitemap/:version', (req, res) => {
+    var template = Handlebars.compile(sitemapTemplate);
+    let torrents = JSON.parse(fs.readFileSync(torrentsJson))
+    torrents = torrents.reverse()
+    torrents.forEach((torrent, ind) => {
+        torrent.name = torrent.name.replace(/_/gi, ' ')
+        torrent.date = new Date(torrent.date).toISOString()
+        torrent.matroskaVideo = torrent.matroskaVideo.replace('C:\\projektit\\MatroskaTesti/videos/', '')
+    })
+    let html = template({ torrents: torrents })
+    fs.writeFileSync(__dirname + '/sitemap/sitemap-' + req.params.version, html)
+    res.sendFile('sitemap/sitemap-' + req.params.version, {root: __dirname })
+})
 app.post('/donate', (req, res) => {
     // Create a new charge
     if(req.body.email) {
@@ -327,6 +369,35 @@ app.post('/donate', (req, res) => {
             auto_settle: false,
             order_id: common.makeid(20),
             description: 'Purkkiin.fi - Lahjoitus 1 € - Videolle: ' + req.body.videoName,
+            customer_name: req.body.videoName,
+            notif_email: req.body.email,
+            ttl: 1440
+        }).then(charge => {
+            openNodechargesArr.push(charge)
+            fs.writeFileSync(chargesJson, JSON.stringify(openNodechargesArr))
+            res.send(charge);
+        })
+        .catch(error => {
+            console.error(`${error.status} | ${error.message}`);
+        });
+    } else {
+        res.send({
+            success: false,
+            error: 'Invalid email address.'
+        });
+    }
+})
+app.post('/donate/:amount', (req, res) => {
+    // Create a new charge
+    if(req.body.email) {
+        opennode.createCharge({
+            amount: parseFloat(req.params.amount),
+            currency: "EUR",
+            callback_url: "https://purkkiin.fi/opennode",
+            success_url: "https://purkkiin.fi/#/opennode",
+            auto_settle: false,
+            order_id: common.makeid(20),
+            description: 'Purkkiin.fi - Lahjoitus ' + parseFloat(req.params.amount) + ' € - Videolle: ' + req.body.videoName,
             customer_name: req.body.videoName,
             notif_email: req.body.email,
             ttl: 1440

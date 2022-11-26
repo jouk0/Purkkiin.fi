@@ -278,6 +278,12 @@ section {
                 display: block;
                 float: left;
                 width: 100%;
+                form {
+                    display: block;
+                    float: left;
+                    width: 94%;
+                    margin-bottom: 10px;
+                }
                 input {
                     height: 35px;
                     padding: 5px 10px !important;

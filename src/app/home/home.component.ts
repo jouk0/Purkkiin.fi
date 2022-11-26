@@ -6,6 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 import * as EmailValidator from 'email-validator';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { CommentDialog } from './commentDialog/commentDialog'
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare const cocoSsd: any;
 
@@ -35,19 +36,31 @@ export class HomeComponent implements OnInit {
   public tagsEnabled: Array<any> = []
   public showVideoList: boolean = false
   public email: string = ''
+  public form: FormGroup;
+  public rating3:number = 0
+  public ratingForms: Array<FormGroup> = []
   constructor(
     public backend: BackendService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private fb: FormBuilder
   ) {
+    this.rating3 = 0;
+    this.form = this.fb.group({
+      rating: ['', Validators.required],
+    })
     this.backend.videoTorrentObserver.subscribe((response:any) => {
       if(response) {
         this.torrents = response
         let genreArr: Array<string> = []
         let tagArr: Array<any> = []
         this.torrents.forEach((elem:any, ind:number) => {
+          this.ratingForms.push(this.fb.group({
+            rating: ['', Validators.required],
+          }))
           elem.show = true
           elem.name = elem.name.replace(/_/gi, ' ')
           let date = new Date(elem.date)
+          elem.ratingId = date.getTime()
           elem.humanDate = date.getDate() + '.' + (date.getMonth()+1) + '.' + date.getFullYear()
           this.options.push(elem.name)
           this.optionsOriginal.push(elem.name)
@@ -106,9 +119,28 @@ export class HomeComponent implements OnInit {
         })
       }
     })
+    this.backend.haeArvostelut()
+    this.backend.arvostelutOsbserver.subscribe((response:any) => {
+      if(response) {
+        console.log(response)
+      }
+    })
+    let localStorageEmail: any = localStorage.getItem('email')
+    if(localStorageEmail) {
+      let emailLocalstorage: any = JSON.parse(localStorageEmail)
+      if(emailLocalstorage) {
+        this.email = emailLocalstorage.email
+      }
+    }
   }
 
   ngOnInit(): void {
+  }
+  validateEmail(email:string): boolean {
+    return EmailValidator.validate(email)
+  }
+  ratingChange(e:any, i:number, rating:number) {
+    this.backend.lahetaArvostelut(this.torrents[i], rating)
   }
   openComments(e:MouseEvent, torrent:any, commentClass: string) {
     e.preventDefault()
@@ -128,6 +160,9 @@ export class HomeComponent implements OnInit {
     let email: any = input.value
     if(EmailValidator.validate(email)) {
       this.email = email
+      localStorage.setItem('email', JSON.stringify({
+        email: this.email
+      }))
     } else {
       input.classList.add('notvalid')
     }

@@ -1,6 +1,6 @@
 {
   "name": "purkkiin.fi",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -27,6 +27,8 @@
     "@types/d3-selection": "^3.0.3",
     "@uniprank/ngx-file-uploader": "^5.1.0",
     "email-validator": "^2.0.4",
+    "handlebars": "^4.7.7",
+    "ngx-star-rating": "^2.1.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

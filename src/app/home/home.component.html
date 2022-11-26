@@ -84,12 +84,16 @@
                 <mat-card-subtitle class="entry-content">Julkaistu: <span class="updated" title="{{torrent.date}}">{{torrent.humanDate}}</span> | Koko: {{humanFileSize(torrent.size)}} | Soittoja: {{(torrent.plays) ? torrent.plays : 0}} | Genre: {{(torrent.genre) ? torrent.genre : ''}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-actions>
+                <h3>Arvostele video:</h3>
+                <form [formGroup]="ratingForms[i]">
+                    <ngx-star-rating (change)="ratingChange($event, i, ratingForms[i].value.rating)" formControlName="{{'rating'}}" [id]="torrent.ratingId"></ngx-star-rating>
+                </form>
                 <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
-                <input value="{{email}}" [ngClass]="{'hide': email !== ''}" class="donate-{{i}}" (change)="updateEmail($event, 'donate-' + i)" type="text" placeholder="Sähköpostiosoite kuittia varten" title="Sähköpostiosoite kuittia varten" />
-                <button mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">Lahjoita 1 €</button>
-                <button mat-raised-button color="primary" (click)="downloadMKV($event, torrent, 'donate-' + i, torrent.name)">Lataa .mkv</button>
-                <button mat-raised-button color="primary" (click)="downloadMP4($event, torrent, 'donate-' + i, torrent.name)">Lataa .mp4</button>
-                <button mat-raised-button color="primary" (click)="openComments($event, torrent, 'comment-' + i)">Kommentoi</button>
+                <input value="{{email}}" [ngClass]="{'hide': email !== ''}" class="donate-{{i}}" (change)="updateEmail($event, 'donate-' + i)" type="text" placeholder="Sähköpostiosoite videoden latausta varten" title="Sähköpostiosoite videoden latausta varten" />
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">Lahjoita 1 €</button>
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="downloadMKV($event, torrent, 'donate-' + i, torrent.name)">Lataa .mkv</button>
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="downloadMP4($event, torrent, 'donate-' + i, torrent.name)">Lataa .mp4</button>
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="openComments($event, torrent, 'comment-' + i)">Kommentoi</button>
             </mat-card-actions>
         </mat-card>
     </section>
