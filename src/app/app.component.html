@@ -4,35 +4,39 @@
   </button>
   <a class="title" routerLink="/" routerLinkActive="active">Purkkiin.fi</a>
   <span class="example-spacer"></span>
+  <h3>Translate:</h3>
+  <select #langSelect (change)="translate.use(langSelect.value)">
+    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+  </select>
   <button mat-button routerLink="/statistiikka" routerLinkActive="active">
-    Statistiikka
+    {{ 'app.Statistiikka' | translate }}
   </button>
   <div class="floatright">
     <button mat-button (click)="login()">
-      Kirjaudu sisään
+      {{ 'app.login' | translate }}
     </button>
     <button mat-button>
-      Työnalla: {{jobsCurrent}}
+      {{ 'app.jobs' | translate }}: {{jobsCurrent}}
     </button>
     <button mat-button>
-      Työjono: {{jobsCount}}
+      {{ 'app.jobsComing' | translate }}: {{jobsCount}}
     </button>
     <button mat-button (click)="update()">
-      Päivitä
+      {{ 'app.update' | translate }}
     </button>
   </div>
   <div class="login" *ngIf="showLogin">
-    <header><h1>Kirjaudu sisään</h1></header>
+    <header><h1>{{ 'app.login' | translate }}</h1></header>
     <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Käyttäjätunnus</mat-label>
+      <mat-label>{{ 'app.username' | translate }}</mat-label>
       <input #username matInput type="text">
     </mat-form-field>
     <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Salasana</mat-label>
+      <mat-label>{{ 'app.password' | translate }}</mat-label>
       <input #password matInput type="password">
     </mat-form-field>
     <button mat-button (click)="sendLogin(username, password)">
-      Kirjaudu sisään
+      {{ 'app.login' | translate }}
     </button>
   </div>
 </mat-toolbar>

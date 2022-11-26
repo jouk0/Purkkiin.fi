@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1669468258624,
+  "timestamp": 1669491394414,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.910feeaa7e205123.js",
+        "/main.4a3719bd919ed10d.js",
         "/manifest.webmanifest",
         "/polyfills.0ecf2227b1f7646f.js",
         "/runtime.5da6c308d20efaba.js",
@@ -31,6 +31,8 @@
       "urls": [
         "/assets/banner.jpg",
         "/assets/dropAreaBackground.jpg",
+        "/assets/i18n/en.json",
+        "/assets/i18n/fi.json",
         "/assets/icons/android-chrome-192x192.png",
         "/assets/icons/android-chrome-512x512.png",
         "/assets/icons/apple-touch-icon.png",
@@ -54,6 +56,8 @@
   "hashTable": {
     "/assets/banner.jpg": "1880be34e2d601e8eda0668ee70abc932037e79f",
     "/assets/dropAreaBackground.jpg": "4f956b86a89a3948377733e672bb1be07f3b8281",
+    "/assets/i18n/en.json": "3463d5ca0c98cdf08ea4d90229b866a44d0dc2af",
+    "/assets/i18n/fi.json": "4e4591c58200d8a904cb3e4f831f439df8bbe4fc",
     "/assets/icons/android-chrome-192x192.png": "1e55a2ce6dda4ab2a58165abbc4c69d9d045141e",
     "/assets/icons/android-chrome-512x512.png": "d7091273ea802d64b29e55bd37512cd89ae1b37b",
     "/assets/icons/apple-touch-icon.png": "24a2fd6ef946c0164164686aa9e8c2846590957d",
@@ -70,8 +74,8 @@
     "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/assets/media-controls.svg": "e88801dc3d955294dc77ebb75b4f8ae1bba69b8b",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "f54e552b4d816b5b137c6e07bcbd52e6c65c42a5",
-    "/main.910feeaa7e205123.js": "a0a8f843b7d4065461abe449c76536132fc9e5f0",
+    "/index.html": "2ce7c472aab98a3d2b9ac22345229958085631c4",
+    "/main.4a3719bd919ed10d.js": "2ab2f0989ebbf9171ba139b732de147b85c3653d",
     "/manifest.webmanifest": "6161991935b625922c2381b004b5952ce0e7af7d",
     "/polyfills.0ecf2227b1f7646f.js": "74903e0e14fb803d33ff9f034e0d444f7d841afc",
     "/runtime.5da6c308d20efaba.js": "892e52ee36e43a39f24380edc4572268c5805479",

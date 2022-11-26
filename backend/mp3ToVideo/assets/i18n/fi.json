@@ -1,0 +1,41 @@
+{
+    "app": {
+      "Statistiikka": "Statistiikka",
+      "login": "Kirjaudu sisään",
+      "jobs": "Työnalla",
+      "jobsComing": "Työjono",
+      "update": "Päivitä",
+      "username": "Käyttäjätunnus",
+      "password": "Salasana"
+    },
+    "home": {
+        "slogan": "Bändien videoiden koti",
+        "publish": "Julkaise oma video",
+        "publishedVideos": "Julkaistut videot",
+        "published": "Julkaistu",
+        "size": "Koko",
+        "plays": "Soittoja",
+        "genre": "Genre",
+        "rateVideo": "Arvostele video",
+        "emailplaceholder": "Sähköpostiosoite videoden latausta varten",
+        "donate": "Lahjoita 1 €",
+        "downloadmkv": "Lataa .mkv",
+        "downloadmp4": "Lataa .mp4",
+        "comment": "Kommentoi",
+        "back": "Takaisin",
+        "guideOne": "Valitse suosikkibiisin .mp3",
+        "guideTwo": "Valitse 1-4 kuvaa joista pidät",
+        "guideThree": "Valitse 1-4 kuvaa itsestäsi",
+        "guideFour": "Valitse 1 video tiedosto Mp4",
+        "guideFive": "Laita ne kaikki yhteen kansioon kotikoneelle",
+        "quickGuide": "Nopea ohje"
+    },
+    "footer": {
+        "thirdpartylicences": "Kolmannen osapuolen lisenssit",
+        "downloadHere": "Lataa tästä",
+        "termsofuse": "Käyttöehdot"
+    },
+    "videoxi": {
+        "guide": "Valitse kaikki tiedostot ja pudota ne tähän kerralla"
+    }
+}

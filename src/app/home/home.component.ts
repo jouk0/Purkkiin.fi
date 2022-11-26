@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
     public dialog: MatDialog,
     private fb: FormBuilder
   ) {
+
     this.rating3 = 0;
     this.form = this.fb.group({
       rating: ['', Validators.required],

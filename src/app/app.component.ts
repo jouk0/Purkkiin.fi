@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BackendService } from './backend.service'
-
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,8 +15,15 @@ export class AppComponent {
   public showLogin: boolean = false
   
   constructor(
-    private backend: BackendService
+    private backend: BackendService,
+    public translate: TranslateService
   ) {
+    translate.addLangs(['fi', 'en']);
+    translate.setDefaultLang('en');
+
+    const browserLang: any = translate.getBrowserLang();
+    translate.use(browserLang.match(/fi|en/) ? browserLang : 'en');
+
     this.backend.jobsObserver.subscribe((response:any) => {
       if(response) {
         this.jobsCurrent = response.active

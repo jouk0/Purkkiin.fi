@@ -1,0 +1,41 @@
+{
+    "app": {
+      "Statistiikka": "Statistics",
+      "login": "Login",
+      "jobs": "Working",
+      "jobsComing": "Jobs coming",
+      "update": "Update",
+      "username": "Username",
+      "password": "Password"
+    },
+    "home": {
+        "slogan": "The home of band videos",
+        "publish": "Publish your own video",
+        "publishedVideos": "Published videos",
+        "published": "Published",
+        "size": "Size",
+        "plays": "Plays",
+        "genre": "Genre",
+        "rateVideo": "Rate the video",
+        "emailplaceholder": "Email address for downloading videos",
+        "donate": "Donate €1",
+        "downloadmkv": "Download .mkv",
+        "downloadmp4": "Download .mp4",
+        "comment": "Comment",
+        "back": "Back to videos",
+        "guideOne": "Choose the .mp3 of your favorite song",
+        "guideTwo": "Choose 1-4 pictures you like",
+        "guideThree": "Choose 1-4 pictures of yourself",
+        "guideFour": "Select 1 video file Mp4",
+        "guideFive": "Put them all in one folder on your home computer",
+        "quickGuide": "A quick guide"
+    },
+    "footer": {
+        "thirdpartylicences": "Third Party Licenses",
+        "downloadHere": "Download here",
+        "termsofuse": "Terms of use"
+    },
+    "videoxi": {
+        "guide": "Select all files and drop them here at once"
+    }
+}

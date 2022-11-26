@@ -1,24 +1,24 @@
 
 <section class="banner">
-    <header><h1>Bändien videoiden koti</h1></header>
+    <header><h1>{{ 'home.slogan' | translate }}</h1></header>
     <button *ngIf="!showUpload"  class="showButton open rubber" (click)="show($event)">
-        <span>🎼Julkaise oma video 🎼</span>
+        <span>🎼 {{ 'home.publish' | translate }} 🎼</span>
         <svg viewBox="-5 -5 110 110" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0,0 C0,0 100,0 100,0 C100,0 100,100 100,100 C100,100 0,100 0,100 C0,100 0,0 0,0"/>
         </svg>
     </button>
-    <button *ngIf="showUpload" class="showButton" mat-button color="primary" (click)="show($event)">Takaisin</button>
+    <button *ngIf="showUpload" class="showButton" mat-button color="primary" (click)="show($event)">{{ 'home.back' | translate }}</button>
 </section>
 <div class="info" *ngIf="showUpload">
     <header>
-        <h1>Nopea ohje</h1>
+        <h1>{{ 'home.quickGuide' | translate }}</h1>
     </header>
     <ul>
-        <li>Valitse suosikkibiisin .mp3</li>
-        <li>Valitse 1-4 kuvaa joista pidät</li>
-        <li>Valitse 1-4 kuvaa itsestäsi</li>
-        <li>Valitse 1 video tiedosto Mp4</li>
-        <li>Laita ne kaikki yhteen kansioon kotikoneelle</li>
+        <li>{{ 'home.guideOne' | translate }}</li>
+        <li>{{ 'home.guideTwo' | translate }}</li>
+        <li>{{ 'home.guideThree' | translate }}</li>
+        <li>{{ 'home.guideFour' | translate }}</li>
+        <li>{{ 'home.guideFive' | translate }}</li>
     </ul>
     <app-videoxi></app-videoxi>
 </div>
@@ -68,7 +68,7 @@
 </div>
 <div class="videolista" *ngIf="!showUpload">
     <header>
-        <h1>Julkaistut videot</h1>
+        <h1>{{ 'home.publishedVideos' | translate }}</h1>
     </header>
     <section class="card hmedia" [ngClass]="{'hidden':!torrent.show}" *ngFor="let torrent of torrents; let i = index">
         <mat-card class="example-card" class="torrent-{{i}}" *ngIf="torrent.show">
@@ -81,19 +81,19 @@
             </mat-card-content>
             <mat-card-header>
                 <mat-card-title class="entry-title fn" rel="bookmark">{{torrent.name}}</mat-card-title>
-                <mat-card-subtitle class="entry-content">Julkaistu: <span class="updated" title="{{torrent.date}}">{{torrent.humanDate}}</span> | Koko: {{humanFileSize(torrent.size)}} | Soittoja: {{(torrent.plays) ? torrent.plays : 0}} | Genre: {{(torrent.genre) ? torrent.genre : ''}}</mat-card-subtitle>
+                <mat-card-subtitle class="entry-content">{{ 'home.published' | translate }}: <span class="updated" title="{{torrent.date}}">{{torrent.humanDate}}</span> | {{ 'home.size' | translate }}: {{humanFileSize(torrent.size)}} | {{ 'home.plays' | translate }}: {{(torrent.plays) ? torrent.plays : 0}} | {{ 'home.genre' | translate }}: {{(torrent.genre) ? torrent.genre : ''}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-actions>
-                <h3>Arvostele video:</h3>
+                <h3>{{ 'home.rateVideo' | translate }}:</h3>
                 <form [formGroup]="ratingForms[i]">
                     <ngx-star-rating (change)="ratingChange($event, i, ratingForms[i].value.rating)" formControlName="{{'rating'}}" [id]="torrent.ratingId"></ngx-star-rating>
                 </form>
                 <button routerLink="/video/{{i}}" routerLinkActive="active" mat-raised-button color="primary">Videon jako sivu</button>
-                <input value="{{email}}" [ngClass]="{'hide': email !== ''}" class="donate-{{i}}" (change)="updateEmail($event, 'donate-' + i)" type="text" placeholder="Sähköpostiosoite videoden latausta varten" title="Sähköpostiosoite videoden latausta varten" />
-                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">Lahjoita 1 €</button>
-                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="downloadMKV($event, torrent, 'donate-' + i, torrent.name)">Lataa .mkv</button>
-                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="downloadMP4($event, torrent, 'donate-' + i, torrent.name)">Lataa .mp4</button>
-                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="openComments($event, torrent, 'comment-' + i)">Kommentoi</button>
+                <input value="{{email}}" [ngClass]="{'hide': email !== ''}" class="donate-{{i}}" (change)="updateEmail($event, 'donate-' + i)" type="text" placeholder="{{ 'home.emailplaceholder' | translate }}" title="{{ 'home.emailplaceholder' | translate }}" />
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="donate($event, 'donate-' + i, torrent.name)">{{ 'home.donate' | translate }}</button>
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="downloadMKV($event, torrent, 'donate-' + i, torrent.name)">{{ 'home.downloadmkv' | translate }}</button>
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="downloadMP4($event, torrent, 'donate-' + i, torrent.name)">{{ 'home.downloadmp4' | translate }}</button>
+                <button *ngIf="validateEmail(email)" mat-raised-button color="primary" (click)="openComments($event, torrent, 'comment-' + i)">{{ 'home.comment' | translate }}</button>
             </mat-card-actions>
         </mat-card>
     </section>

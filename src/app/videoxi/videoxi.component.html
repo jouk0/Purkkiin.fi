@@ -5,7 +5,7 @@
         </li>
     </ul>
     <div class="my-drop-zone" ngxFile2Drop [uploader]="uploader">
-        <p *ngIf="!filesInTransition.length">Valitse kaikki tiedostot ja pudota ne tähän kerralla</p>
+        <p *ngIf="!filesInTransition.length">{{ 'videoxi.guide' | translate }}</p>
         <input ngxFile2Select type="file" multiple [uploader]="uploader"/>
     </div>
 </section>
@@ -18,7 +18,7 @@
             </li>
         </ul>
         <div class="my-drop-zone" ngxFile2Drop [uploader]="uploader2">
-            <p *ngIf="!filesInTransition.length">Valitse kaikki tiedostot ja pudota ne tähän kerralla</p>
+            <p *ngIf="!filesInTransition.length">{{ 'videoxi.guide' | translate }}</p>
             <input ngxFile2Select type="file" multiple [uploader]="uploader2"/>
         </div>
     </section>
