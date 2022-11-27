@@ -37,7 +37,7 @@ openNode.txt
 /libpeerconnection.log
 testem.log
 /typings
-
+/testing
 # System files
 .DS_Store
 Thumbs.db
