@@ -89,6 +89,7 @@ div {
                 width: 100%;
                 text-align: center;
                 border-bottom: 1px solid #303030;
+                color: white;
             }
         }
     }
@@ -109,12 +110,16 @@ div {
         header {
             h1 {
                 text-align: center;
+                color: white;
             }
         }
         ul {
             margin: 0 auto;
             width: 250px;
             display: block;
+            li {
+                color: white;
+            }
         }
         app-videoxi {
             display: block;
@@ -266,18 +271,30 @@ section {
         mat-card {
             display: block;
             float: left;
+            background-color: black !important;
             mat-card-header {
                 display: block;
                 float: left;
                 mat-card-title {
                     font-size: 17px;
                     height: 39px;
+                    color: white;
+                }
+                mat-card-subtitle {
+                    color: white;
                 }
             }
             mat-card-actions {
                 display: block;
                 float: left;
                 width: 100%;
+                h3 {
+                    display: block;
+                    float: left;
+                    width: 100%;
+                    padding: 0 20px;
+                    color: white;
+                }
                 form {
                     display: block;
                     float: left;

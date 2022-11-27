@@ -47,6 +47,19 @@ export class BackendService {
       this.arvostelut.next(response)
     })
   }
+  saveEmail(email: string) {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    let data = {
+      email: email
+    }
+    this.http.post(this.backend + '/email', JSON.stringify(data), {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+    })
+  }
   lahetaArvostelut(torrent:any, rating: number) {
     const headers = { 
       'content-type': 'application/json'

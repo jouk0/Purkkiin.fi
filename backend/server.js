@@ -1,36 +1,39 @@
-require('dotenv').config()
-const express = require("express")
-const cors = require("cors")
-const fs = require('fs')
-const bodyParser = require('body-parser')
-const fileUpload = require('express-fileupload')
-var http = require('http');
-var https = require('https');
-let videoxi = require('./processors/videoxi')
-let common = require('./common')
-var compression = require('compression')
-var zlib = require('zlib')
-const helmet = require("helmet");
-const slowDown = require("express-slow-down");
-const rateLimit = require("express-rate-limit");
-let breachIpList = require('./blacklist/blacklist.json')
-let statistics = require('./statistics/statistics.json')
-const os = require("os")
-const cluster = require("cluster")
-const QueueMQ = require('bullmq')
-const { createBullBoard } = require('@bull-board/api')
-const { BullAdapter } = require('@bull-board/api/bullAdapter')
-const { BullMQAdapter } = require('@bull-board/api/bullMQAdapter')
-const { ExpressAdapter } = require('@bull-board/express')
-const jwt = require('jsonwebtoken');
-let crypto = require('crypto')
-const { runInNewContext } = require("vm")
+import * as dotenv from 'dotenv'
+dotenv.config()
+import * as express from "express"
+import * as cors from "cors"
+import * as fs from 'fs'
+import * as bodyParser from 'body-parser'
+import * as fileUpload from 'express-fileupload'
+import * as http from 'http'
+import * as https from 'https'
+import * as videoxi from './processors/videoxi.mjs'
+import * as common from './common'
+import * as compression from 'compression'
+import * as zlib from 'zlib'
+import * as helmet from "helmet"
+import * as slowDown from "express-slow-down"
+import * as rateLimit from "express-rate-limit"
+import * as breachIpList from './blacklist/blacklist.json' assert {type: 'json'}
+import * as statistics from './statistics/statistics.json' assert {type: 'json'}
+import * as os from "os"
+import * as cluster from "cluster"
+import { createBullBoard } from '@bull-board/api'
+import { BullAdapter } from '@bull-board/api/bullAdapter'
+import { ExpressAdapter } from '@bull-board/express'
+import * as jwt from 'jsonwebtoken'
+import * as crypto from 'crypto'
+import * as useragent from 'express-useragent'
+import * as geoip from 'geoip-lite'
+import * as opennode from 'opennode'
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 let random = crypto.randomBytes(64).toString('hex')
 var privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem');
 var certificate = fs.readFileSync(__dirname + '/cert/fullchain.pem');
-var useragent = require('express-useragent');
-var geoip = require('geoip-lite');
-const opennode = require('opennode');
 opennode.setCredentials(process.env.OPENNODEAPIKEY, 'live');
 
 var credentials = {key: privateKey, cert: certificate};

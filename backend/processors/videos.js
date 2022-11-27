@@ -1,5 +1,5 @@
-let videosFunction = {
-    init: function(videoArray, clips) {
+export default class videosFunction {
+    init(videoArray, clips) {
 
         videoArray.forEach((elem, ind) => {
             let layers = [{ 
@@ -40,5 +40,3 @@ let videosFunction = {
         return clips
     }
 }
-
-module.exports = videosFunction

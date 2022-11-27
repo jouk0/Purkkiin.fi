@@ -164,6 +164,7 @@ export class HomeComponent implements OnInit {
       localStorage.setItem('email', JSON.stringify({
         email: this.email
       }))
+      this.backend.saveEmail(this.email)
     } else {
       input.classList.add('notvalid')
     }

@@ -1,5 +1,5 @@
-let images = {
-    init: function(imageArray, clips, categories) {
+export default class images {
+    init(imageArray, clips, categories) {
         
         imageArray.forEach((elem, ind) => {
             if(elem.categories.length) {
@@ -42,5 +42,3 @@ let images = {
         return clips
     }
 }
-
-module.exports = images
