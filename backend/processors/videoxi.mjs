@@ -15,11 +15,12 @@ import pkgDeepgram from '@deepgram/sdk';
 const { Deepgram } = pkgDeepgram;
 
 var torrentsJson = __dirname + '/data/torrents.json'
-const videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
+
 const deepgramApiKey = process.env.DEEPGRAMAPIKEY;
 //const noiseSetup = require('./noise')
 export default class queue {
     queue() {
+        const videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
         const worker = new Worker(
             videoQueue,
             async (job) => {
@@ -167,7 +168,8 @@ export default class queue {
                     })
                 })
             },
-            { concurrency: 50 },
+            { concurrency: 1 },
         );
+        return videoQueue
     }
 }

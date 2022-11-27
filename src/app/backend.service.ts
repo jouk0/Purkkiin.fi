@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from './../environments/environment';
 import * as EmailValidator from 'email-validator';
+import { local } from 'd3-selection';
 
 declare const Essentia: any;
 declare const EssentiaWASM: any;
@@ -140,6 +141,43 @@ export class BackendService {
     this.getJobs()
     this.getJobsList()
     //this.obliterate()
+    this.postKavijat()
+  }
+  
+  makeid(length:number) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+  postKavijat() {
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    let kavijaLocalstorage: any = localStorage.getItem('kavija')
+    let data: any
+    let id:string = ''
+    if(!kavijaLocalstorage) {
+      id = this.makeid(5) + '-' + this.makeid(5) + '-' + this.makeid(5) + '-' + this.makeid(5) + '-' + this.makeid(5)
+      data = {
+        id: id
+      }
+      localStorage.setItem('kavija', JSON.stringify(data))
+    } else {
+      data = JSON.parse(kavijaLocalstorage)
+    }
+    let postData = {
+      kavija: data,
+      date: new Date()
+    }
+    this.http.post(this.backend + '/kavijat', JSON.stringify(postData), {
+      'headers': headers
+    }).subscribe((response: any) => {
+      console.log(response)
+    })
   }
   login(username:string, password:string) {
     const headers = { 

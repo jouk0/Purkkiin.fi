@@ -181,28 +181,30 @@ app.post('/login', (req, res) => {
 })
 serverAdapter.setBasePath('/admin/queues')
 //app.use('/admin/queues', serverAdapter.getRouter());
+let videoQueueClass = new videoxi()
+videoQueueClass.queue().
 app.post('/queue', async (req, res) => {
-    videoxi.queue.add({ video: req.body.video });
+    videoQueueClass.queue.add({ video: req.body.video });
     res.send({
         success: true
     })
 })
 app.get('/queue', async (req, res) => {
-    let jobs = await videoxi.queue.getJobCounts()
+    let jobs = await videoQueueClass.queue.getJobCounts()
     res.send({
         success: true,
         jobs: jobs
     })
 })
 app.get('/jobs', async (req, res) => {
-    let jobs = await videoxi.queue.getJobs()
+    let jobs = await videoQueueClass.queue.getJobs()
     res.send({
         success: true,
         jobs: jobs
     })
 })
 app.get('/restart', async () => {
-    let jobs = await videoxi.queue.obliterate({ force: boolean})
+    let jobs = await videoQueueClass.queue.obliterate({ force: boolean})
     res.send({
         success: true
     })
@@ -364,7 +366,15 @@ app.post('/arvostelut', (req, res) => {
 import emailit from './emailit/emailit.json' assert {type: 'json'}
 app.post('/email', (req, res) => {
     arvostelut.push(req.body)
-    fs.writeFileSync(__dirname + '/emailit/emailit.json', JSON.stringify(kommentit))
+    fs.writeFileSync(__dirname + '/emailit/emailit.json', JSON.stringify(emailit))
+    res.send({
+        success: true
+    });
+})
+import kavijat from './kavijat/kavijat.json' assert {type: 'json'}
+app.post('/kavijat', (req, res) => {
+    kavijat.push(req.body)
+    fs.writeFileSync(__dirname + '/kavijat/kavijat.json', JSON.stringify(kavijat))
     res.send({
         success: true
     });
