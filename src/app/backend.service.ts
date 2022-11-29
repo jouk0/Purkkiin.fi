@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from './../environments/environment';
 import * as EmailValidator from 'email-validator';
-import { local } from 'd3-selection';
 
 declare const Essentia: any;
 declare const EssentiaWASM: any;
@@ -31,6 +30,8 @@ export class BackendService {
   public kommentitOsbserver = this.kommentit.asObservable()
   public arvostelut: any = new BehaviorSubject(null)
   public arvostelutOsbserver = this.arvostelut.asObservable()
+  public kavijat: any = new BehaviorSubject(null)
+  public kavijatOsbserver = this.kavijat.asObservable()
   
   constructor(
     public http: HttpClient
@@ -44,7 +45,7 @@ export class BackendService {
     this.http.get(this.backend + '/arvostelut', {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
       this.arvostelut.next(response)
     })
   }
@@ -58,7 +59,7 @@ export class BackendService {
     this.http.post(this.backend + '/email', JSON.stringify(data), {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
     })
   }
   lahetaArvostelut(torrent:any, rating: number) {
@@ -73,7 +74,7 @@ export class BackendService {
     this.http.post(this.backend + '/arvostelut', JSON.stringify(data), {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
       this.haeArvostelut()
     })
   }
@@ -84,7 +85,7 @@ export class BackendService {
     this.http.get(this.backend + '/kommentit', {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
       this.kommentit.next(response)
     })
   }
@@ -101,7 +102,7 @@ export class BackendService {
     this.http.post(this.backend + '/kommentit', JSON.stringify(data), {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
     })
   }
   donate(email:string, videoName:string) {
@@ -116,7 +117,7 @@ export class BackendService {
       this.http.post(this.backend + '/donate', JSON.stringify(data), {
         'headers': headers
       }).subscribe((response: any) => {
-        console.log(response)
+        //console.log(response)
         window.open(response.hosted_checkout_url, '_blank')
       })
     }
@@ -153,6 +154,17 @@ export class BackendService {
     }
     return result;
   }
+  getKavijat() {
+    
+    const headers = { 
+      'content-type': 'application/json'
+    }
+    this.http.get(this.backend + '/kavijat', {
+      'headers': headers
+    }).subscribe((response: any) => {
+      this.kavijat.next(response)
+    })
+  }
   postKavijat() {
     const headers = { 
       'content-type': 'application/json'
@@ -176,7 +188,7 @@ export class BackendService {
     this.http.post(this.backend + '/kavijat', JSON.stringify(postData), {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
     })
   }
   login(username:string, password:string) {
@@ -206,7 +218,7 @@ export class BackendService {
     this.http.get(this.backend + '/restart', {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
     })
     
   }
@@ -219,7 +231,7 @@ export class BackendService {
     this.http.get(this.backend + '/jobs', {
       'headers': headers
     }).subscribe((response: any) => {
-      console.log(response)
+      //console.log(response)
       this.jobsList.next(response)
       /*
       let essentia:any

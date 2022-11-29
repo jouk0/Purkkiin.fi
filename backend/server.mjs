@@ -372,6 +372,12 @@ app.post('/email', (req, res) => {
     });
 })
 import kavijat from './kavijat/kavijat.json' assert {type: 'json'}
+app.get('/kavijat', (req, res) => {
+    res.send({
+        success: true,
+        kavijat: kavijat
+    });
+})
 app.post('/kavijat', (req, res) => {
     kavijat.push(req.body)
     fs.writeFileSync(__dirname + '/kavijat/kavijat.json', JSON.stringify(kavijat))
@@ -391,8 +397,8 @@ app.get('/sitemap/:version', (req, res) => {
         torrent.matroskaVideo = torrent.matroskaVideo.replace('C:\\projektit\\MatroskaTesti/videos/', '')
     })
     let html = template({ torrents: torrents })
-    fs.writeFileSync(__dirname + '/sitemap/sitemap-' + req.params.version, html)
-    res.sendFile('sitemap/sitemap-' + req.params.version, {root: __dirname })
+    fs.writeFileSync(__dirname + '/sitemap/sitemap-' + req.params.version + '.xml', html)
+    res.sendFile('sitemap/sitemap-' + req.params.version + '.xml', {root: __dirname })
 })
 app.post('/donate', (req, res) => {
     // Create a new charge

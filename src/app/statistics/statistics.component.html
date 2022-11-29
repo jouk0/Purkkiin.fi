@@ -2,6 +2,25 @@
   <header>
     <h1>Statistiikka</h1>
   </header>
+  <article *ngIf="showKavijaStatistics">
+    <header>
+        <h1>Kävijät</h1>
+    </header>
+    <ngx-charts-bar-vertical
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="kavijaStatistics"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel6"
+      [yAxisLabel]="yAxisLabel"
+      (select)="onSelect($event)">
+    </ngx-charts-bar-vertical>
+  </article>
   <article *ngIf="showStatistics">
     <header>
         <h1>Selaimet</h1>

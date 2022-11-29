@@ -23,6 +23,7 @@ export class StatisticsComponent implements OnInit {
   public xAxisLabel3 = 'Alustat';
   public xAxisLabel4 = 'Käyttöjärjestelmät';
   public xAxisLabel5 = 'Selain versiot';
+  public xAxisLabel6 = 'Päivämäärä';
   public showYAxisLabel = true;
   public yAxisLabel = 'Määrä';
 
@@ -35,7 +36,35 @@ export class StatisticsComponent implements OnInit {
   public locationStatistics: Array<any> = []
   public osStatistics: Array<any> = []
   public browserVersionStatistics: Array<any> = []
+  public kavijaStatistics: Array<any> = []
+  public showKavijaStatistics: boolean = false
   constructor(private backend:BackendService) {
+    this.backend.getKavijat()
+    this.backend.kavijatOsbserver.subscribe((response:any) => {
+      if(response) {
+        response.kavijat.forEach((kavija:any, ind:number) => {
+          if(kavija.date) {
+            let found = false
+            let kavijaDate = new Date(kavija.date)
+            let kavijaDateString = kavijaDate.getDate() + '.' + (kavijaDate.getMonth()+1) + '.' + kavijaDate.getFullYear()
+            this.kavijaStatistics.forEach((kavija2:any, ind:number) => {
+              let kavija2Date = kavija2.name
+              if(kavijaDateString === kavija2Date) {
+                found = true
+                kavija2.value += 1
+              }
+            })
+            if(!found) {
+              this.kavijaStatistics.push({
+                name: kavijaDateString,
+                value: 1
+              })
+            }
+          }
+        })
+        this.showKavijaStatistics = true
+      }
+    })
     this.backend.statisticOsbserver.subscribe((response:any) => {
       if(response) {
         response.forEach((song: any, ind:number) => {
@@ -114,11 +143,13 @@ export class StatisticsComponent implements OnInit {
             })
           }
         })
+        /*
         console.log(this.browserStatistics)
         console.log(this.locationStatistics)
         console.log(this.platformStatistics)
         console.log(this.osStatistics)
         console.log(this.browserVersionStatistics)
+        */
         this.showStatistics = true
       }
     })
