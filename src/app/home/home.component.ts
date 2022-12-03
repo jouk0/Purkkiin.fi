@@ -295,7 +295,7 @@ export class HomeComponent implements OnInit {
     let email: any = input.value
     input.classList.remove('notvalid')
     if(EmailValidator.validate(email)) {
-      this.backend.donate(email, videoName)
+      //this.backend.donate(email, videoName)
     } else {
       input.classList.add('notvalid')
     }
