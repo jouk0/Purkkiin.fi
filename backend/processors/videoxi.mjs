@@ -1,4 +1,4 @@
-import { Queue, QueueScheduler, Worker, Job } from 'bullmq';
+import { Queue, Worker } from 'bullmq';
 import * as fs from 'fs'
 import * as Xvfb from 'xvfb'
 import * as getMP3Duration from 'get-mp3-duration'
@@ -13,19 +13,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import pkgDeepgram from '@deepgram/sdk';
 const { Deepgram } = pkgDeepgram;
+import hbjs from 'handbrake-js'
 
 var torrentsJson = __dirname + '/data/torrents.json'
 
 const deepgramApiKey = process.env.DEEPGRAMAPIKEY;
 //const noiseSetup = require('./noise')
 export default class queue {
-    queue() {
-        const videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
-        const worker = new Worker(
-            videoQueue,
+    videoQueue
+    worker
+    constructor() {
+        this.videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
+        this.worker = new Worker(
+            this.videoQueue,
             async (job) => {
             
-                job.progress(5);
+                //job.progress(5);
                 var xvfb = new Xvfb({
                     silent: true,
                     xvfb_args: ["-screen", "0", '1280x720x24', "-ac"],
@@ -53,7 +56,7 @@ export default class queue {
                 clips = clips.concat(clips4)
                 var mp3Path = video.mp3;
                 let folder = common.makeid(5) + '-' + common.makeid(5) + '-' + common.makeid(5) + '-' + common.makeid(5)
-                fs.mkdir(__dirname + '/data/videos/' + folder, { recursive: true }, async (err) => {
+                return fs.mkdir(__dirname + '/data/videos/' + folder, { recursive: true }, async (err) => {
                     if (err) throw err;
 
                     var mp4Path = __dirname + '/data/videos/' + folder + '/' + songNameForHD + '.mp4';
@@ -95,7 +98,7 @@ export default class queue {
                             paha(err)
                         });
                     })
-                    subtitlesPromise.then(async (transcription) => {
+                    return subtitlesPromise.then(async (transcription) => {
                         let subtitlesPath = newVideo.mp4.split('/')[0] + '/transcription.json'
                         fs.writeFileSync(subtitlesPath, JSON.stringify(transcription))
                         let editSpec = {
@@ -127,21 +130,19 @@ export default class queue {
                                 mp3LenghtInSeconds -= elem.duration
                             }
                         })
-                        job.progress(10);
+                        //job.progress(10);
                         console.log(editSpec)
                         await editly(editSpec)
                         .catch(console.error);
-                        const hbjs = require('handbrake-js')
                 
                         const options = {
                                 input: folder + '/' + songNameForHD + '.mp4',
                                 output: folder + '/' + songNameForHD + '.mkv'
                         }
-                        job.progress(50)
+                        //job.progress(50)
                         hbjs.spawn(options)
                         .on('error', (err) => {
                             console.error(err)
-                            paha(err)
                         })
                         .on('output', console.log)
                         .on('complete', async () => {
@@ -162,14 +163,24 @@ export default class queue {
                             torrents.push(data)
                             await fs.writeFileSync(torrentsJson, JSON.stringify(torrents))
                             xvfb.stop();
-                            job.progress(100);
-                            done();
+                            //job.progress(100);
                         })
                     })
                 })
+            }, { 
+                autorun: true,
+                concurrency: 2,
+                connection: {
+                    host: '127.0.0.1',
+                    port: 6379
+                }
             },
-            { concurrency: 1 },
         );
-        return videoQueue
+    }
+    getqueue() {
+        return this.videoQueue
+    }
+    getworker() {
+        return this.worker
     }
 }

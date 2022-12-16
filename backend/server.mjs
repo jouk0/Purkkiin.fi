@@ -157,7 +157,7 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
 */
 const users = [{
     username: 'admin',
-    password: 'TosiKultainenJaKuparinenSalasana1@'
+    password: process.env.ADMINPASSWORD
 }]
 app.post('/login', (req, res) => {
     let found = false
@@ -182,31 +182,25 @@ app.post('/login', (req, res) => {
 serverAdapter.setBasePath('/admin/queues')
 //app.use('/admin/queues', serverAdapter.getRouter());
 let videoQueueClass = new videoxi()
-videoQueueClass.queue().
 app.post('/queue', async (req, res) => {
-    videoQueueClass.queue.add({ video: req.body.video });
+    videoQueueClass.videoQueue.add('Videoxi', { video: req.body.video });
+    videoQueueClass.worker.run()
     res.send({
         success: true
     })
 })
 app.get('/queue', async (req, res) => {
-    let jobs = await videoQueueClass.queue.getJobCounts()
+    let jobs = await videoQueueClass.videoQueue.getJobCounts()
     res.send({
         success: true,
         jobs: jobs
     })
 })
 app.get('/jobs', async (req, res) => {
-    let jobs = await videoQueueClass.queue.getJobs()
+    let jobs = await videoQueueClass.videoQueue.getJobs()
     res.send({
         success: true,
         jobs: jobs
-    })
-})
-app.get('/restart', async () => {
-    let jobs = await videoQueueClass.queue.obliterate({ force: boolean})
-    res.send({
-        success: true
     })
 })
 app.get('/statistics', async (req, res) => {
@@ -215,7 +209,6 @@ app.get('/statistics', async (req, res) => {
         statistics: statistics
     })
 })
-
 app.post('/statistics', async (req, res) => {
     let found = false
     var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
