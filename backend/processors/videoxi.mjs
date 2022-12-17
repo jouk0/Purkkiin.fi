@@ -16,7 +16,6 @@ const __dirname = path.dirname(__filename);
 import pkgDeepgram from '@deepgram/sdk';
 const { Deepgram } = pkgDeepgram;
 import hbjs from 'handbrake-js'
-var torrentsJson = __dirname + '/data/torrents.json'
 
 const deepgramApiKey = process.env.DEEPGRAMAPIKEY;
 //const noiseSetup = require('./noise')
@@ -36,6 +35,7 @@ export default class queue {
         this.worker = new Worker(
             'Videoxi',
             async (job) => {
+                var torrentsJson = this.__dirname + '/data/torrents.json'
             
                 //job.progress(5);
                 this.xvfb.start((err)=>{if (err) console.error(err)})
@@ -86,95 +86,74 @@ export default class queue {
                         mp3LenghtInSeconds = duration/1000
                         mimetype = 'audio/mp3'
                     }
-
-                    // Initializes the Deepgram SDK
-                    const deepgram = new Deepgram(this.deepgramApiKey);
-                    let subtitlesPromise = new Promise((hyva, paha) => {
-                        deepgram.transcription.preRecorded(
-                            { buffer: fs.readFileSync(pathToFile), mimetype },
-                            { punctuate: true, language: 'en-US' },
-                        )
-                        .then((transcription) => {
-                            console.dir(transcription, {depth: null});
-                            hyva(transcription)
+                    let editSpec = {
+                        width: 256,
+                        height: 128,
+                        outPath: newVideo.mp4,
+                        fps: 11,
+                        clips: newVideo.clips,
+                        audioNorm: { 
+                            enable: true, 
+                            gaussSize: 3, 
+                            maxGain: 100 
+                        },
+                        audioTracks: [
+                            { path: newVideo.mp3 }
+                        ]
+                    }
+                        
+                    editSpec.clips.forEach((elem) => {
+                        let found = false
+                        elem.layers.forEach((elem2, ind2) => {
+                            if(elem2.type === 'video') {
+                                found = true
+                            }
                         })
-                        .catch((err) => {
-                            console.log(err);
-                            paha(err)
-                        });
+                        if(!found) {
+                            elem.duration = mp3LenghtInSeconds / (editSpec.clips.length-1)
+                        } else {
+                            mp3LenghtInSeconds -= elem.duration
+                        }
                     })
-                    return subtitlesPromise.then(async (transcription) => {
-                        let subtitlesPath = newVideo.mp4.split('/')[0] + '/transcription.json'
-                        fs.writeFileSync(subtitlesPath, JSON.stringify(transcription))
-                        let editSpec = {
-                            width: 512,
-                            height: 256,
-                            outPath: newVideo.mp4,
-                            fps: 11,
-                            clips: newVideo.clips,
-                            audioNorm: { 
-                                enable: true, 
-                                gaussSize: 3, 
-                                maxGain: 100 
-                            },
-                            audioTracks: [
-                                { path: newVideo.mp3 }
-                            ]
+                    //job.progress(10);
+                    console.log(editSpec)
+                    await editly(editSpec)
+                    .catch(console.error);
+            
+                    const options = {
+                            input: this.__dirname + '/data/videos/' + folder + '/' + songNameForHD + '.mp4',
+                            output: this.__dirname + '/data/videos/' + folder + '/' + songNameForHD + '.mkv'
+                    }
+                    //job.progress(50)
+                    hbjs.spawn(options)
+                    .on('error', (err) => {
+                        console.error(err)
+                    })
+                    .on('output', console.log)
+                    .on('complete', async () => {
+                        //job.progress(80);
+                        var stats = fs.statSync(this.__dirname + '/data/videos/' + folder + '/' + songNameForHD + '.mp4')
+                        let data = {
+                            type: 'video/mp4',
+                            name: songName,
+                            size: stats.size,
+                            filename: folder + '/' + songNameForHD + '.mp4',
+                            matroskaVideo: folder + '/' + songNameForHD + '.mkv',
+                            date: new Date(),
+                            genre: job.data.video.genre,
+                            categories: categories,
+                            email: job.data.video.email
                         }
-                            
-                        editSpec.clips.forEach((elem) => {
-                            let found = false
-                            elem.layers.forEach((elem2, ind2) => {
-                                if(elem2.type === 'video') {
-                                    found = true
-                                }
-                            })
-                            if(!found) {
-                                elem.duration = mp3LenghtInSeconds / (editSpec.clips.length-1)
-                            } else {
-                                mp3LenghtInSeconds -= elem.duration
-                            }
-                        })
-                        //job.progress(10);
-                        console.log(editSpec)
-                        await editly(editSpec)
-                        .catch(console.error);
-                
-                        const options = {
-                                input: folder + '/' + songNameForHD + '.mp4',
-                                output: folder + '/' + songNameForHD + '.mkv'
-                        }
-                        //job.progress(50)
-                        hbjs.spawn(options)
-                        .on('error', (err) => {
-                            console.error(err)
-                        })
-                        .on('output', console.log)
-                        .on('complete', async () => {
-                            job.progress(80);
-                            var stats = fs.statSync(newVideo.mp4)
-                            let data = {
-                                type: 'video/mp4',
-                                name: songName,
-                                size: stats.size,
-                                filename: folder + '/' + songNameForHD + '.mp4',
-                                matroskaVideo: '/' + songNameForHD + '.mkv',
-                                date: new Date(),
-                                genre: job.data.video.genre,
-                                categories: categories,
-                                email: job.data.video.email
-                            }
-                            let torrents = JSON.parse(fs.readFileSync(torrentsJson))
-                            torrents.push(data)
-                            await fs.writeFileSync(torrentsJson, JSON.stringify(torrents))
-                            this.xvfb.stop();
-                            //job.progress(100);
-                        })
+                        let torrents = JSON.parse(fs.readFileSync(torrentsJson))
+                        torrents.push(data)
+                        fs.writeFileSync(torrentsJson, JSON.stringify(torrents))
+                        this.xvfb.stop();
+                        //job.progress(100);
                     })
                 })
             }, { 
                 autorun: true,
-                concurrency: 2,
+                concurrency: 1,
                 connection: {
                     host: '127.0.0.1',
                     port: 6379
