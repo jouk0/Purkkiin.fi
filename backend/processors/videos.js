@@ -1,10 +1,16 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export default class videosFunction {
+    __dirname = __dirname
+    constructor() {}
     init(videoArray, clips) {
 
         videoArray.forEach((elem, ind) => {
             let layers = [{ 
                 type: 'video', 
-                path: __dirname + '/data/videos/' + elem.path, 
+                path: this.__dirname + '/data/videos/' + elem.path, 
                 cutFrom: 0, 
                 cutTo: elem.duration,
                 resizeMode: 'cover'

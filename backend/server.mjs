@@ -184,7 +184,6 @@ serverAdapter.setBasePath('/admin/queues')
 let videoQueueClass = new videoxi()
 app.post('/queue', async (req, res) => {
     videoQueueClass.videoQueue.add('Videoxi', { video: req.body.video });
-    videoQueueClass.worker.run()
     res.send({
         success: true
     })

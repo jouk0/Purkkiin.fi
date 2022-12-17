@@ -1,4 +1,10 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export default class images {
+    __dirname = __dirname
+    constructor() {}
     init(imageArray, clips, categories) {
         
         imageArray.forEach((elem, ind) => {
@@ -7,7 +13,7 @@ export default class images {
             }
             let layers = [{ 
                 type: 'image', 
-                path: __dirname + '/data/videos/' + elem.path, 
+                path: this.__dirname + '/data/videos/' + elem.path, 
                 zoomDirection: 'in', 
                 resizeMode: 'cover' 
             }]

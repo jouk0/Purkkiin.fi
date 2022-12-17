@@ -32,7 +32,7 @@
             </button>
         </header>
         <div *ngIf="file.file.type.indexOf('image') !== -1">
-            <img src="{{file.name}}" (load)="detectImages()" class="contentImage" crossorigin='anonymous' width="300" id="{{file.id}}"  />
+            <img src="{{file.name}}" class="contentImage" crossorigin='anonymous' width="300" id="{{file.id}}"  />
             <label>Info text:</label>
             <input type="text" (change)="changeImageText($event, file)" placeholder="eg. Live at Oslo" />
             <label>Title:</label>

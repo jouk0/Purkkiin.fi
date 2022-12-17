@@ -1,12 +1,14 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import { Queue, Worker } from 'bullmq';
-import * as fs from 'fs'
-import * as Xvfb from 'xvfb'
-import * as getMP3Duration from 'get-mp3-duration'
+import fs from 'fs'
+import Xvfb from 'xvfb'
+import getMP3Duration from 'get-mp3-duration'
 import { getAudioDurationInSeconds } from 'get-audio-duration'
-import * as editly from 'editly'
-import * as common from '../common.js'
-import * as imageSetup from './images.js'
-import * as videoSetup from './videos.js'
+import editly from 'editly'
+import { makeid } from '../common.js'
+import imageSetup from './images.js'
+import videoSetup from './videos.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -14,7 +16,6 @@ const __dirname = path.dirname(__filename);
 import pkgDeepgram from '@deepgram/sdk';
 const { Deepgram } = pkgDeepgram;
 import hbjs from 'handbrake-js'
-
 var torrentsJson = __dirname + '/data/torrents.json'
 
 const deepgramApiKey = process.env.DEEPGRAMAPIKEY;
@@ -22,25 +23,29 @@ const deepgramApiKey = process.env.DEEPGRAMAPIKEY;
 export default class queue {
     videoQueue
     worker
+    xvfb = new Xvfb({
+        silent: true,
+        xvfb_args: ["-screen", "0", '1280x720x24', "-ac"],
+    })
+    videoSetup = new videoSetup()
+    imageSetup = new imageSetup()
+    __dirname = __dirname
+    deepgramApiKey = deepgramApiKey
     constructor() {
         this.videoQueue = new Queue('Videoxi', { redis: { port: 6379, host: '127.0.0.1' /*, password: ''*/ } });
         this.worker = new Worker(
-            this.videoQueue,
+            'Videoxi',
             async (job) => {
             
                 //job.progress(5);
-                var xvfb = new Xvfb({
-                    silent: true,
-                    xvfb_args: ["-screen", "0", '1280x720x24', "-ac"],
-                });
-                xvfb.start((err)=>{if (err) console.error(err)})
+                this.xvfb.start((err)=>{if (err) console.error(err)})
                 let video = job.data.video
                 var songName = video.name.replace(/[^a-z-9]/gi, '_').toLowerCase();
                 var songNameForHD = video.name.replace(/[^a-zöäå0-9]/gi, '_').toLowerCase();
                 let clips = []
-                videoSetup.init(video.videos, clips)
+                this.videoSetup.init(video.videos, clips)
                 let categories = []
-                imageSetup.init(video.images, clips, categories)
+                this.imageSetup.init(video.images, clips, categories)
                 clips.push({ 
                     duration: 2,
                     layers: [
@@ -55,13 +60,13 @@ export default class queue {
                 clips = clips.concat(clips3)
                 clips = clips.concat(clips4)
                 var mp3Path = video.mp3;
-                let folder = common.makeid(5) + '-' + common.makeid(5) + '-' + common.makeid(5) + '-' + common.makeid(5)
-                return fs.mkdir(__dirname + '/data/videos/' + folder, { recursive: true }, async (err) => {
+                let folder = makeid(5) + '-' + makeid(5) + '-' + makeid(5) + '-' + makeid(5)
+                return fs.mkdir(this.__dirname + '/data/videos/' + folder, { recursive: true }, async (err) => {
                     if (err) throw err;
 
-                    var mp4Path = __dirname + '/data/videos/' + folder + '/' + songNameForHD + '.mp4';
+                    var mp4Path = this.__dirname + '/data/videos/' + folder + '/' + songNameForHD + '.mp4';
                     let newVideo = {
-                        mp3: __dirname + '/data/videos/' + mp3Path,
+                        mp3: this.__dirname + '/data/videos/' + mp3Path,
                         mp4: mp4Path,
                         clips: clips
                     }
@@ -83,7 +88,7 @@ export default class queue {
                     }
 
                     // Initializes the Deepgram SDK
-                    const deepgram = new Deepgram(deepgramApiKey);
+                    const deepgram = new Deepgram(this.deepgramApiKey);
                     let subtitlesPromise = new Promise((hyva, paha) => {
                         deepgram.transcription.preRecorded(
                             { buffer: fs.readFileSync(pathToFile), mimetype },
@@ -162,7 +167,7 @@ export default class queue {
                             let torrents = JSON.parse(fs.readFileSync(torrentsJson))
                             torrents.push(data)
                             await fs.writeFileSync(torrentsJson, JSON.stringify(torrents))
-                            xvfb.stop();
+                            this.xvfb.stop();
                             //job.progress(100);
                         })
                     })
