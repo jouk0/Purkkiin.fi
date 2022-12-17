@@ -39,12 +39,6 @@
             <input type="text" (change)="changeImageTitle($event, file)" placeholder="eg. Song name" />
             <label>Subtitle:</label>
             <input type="text" (change)="changeImageSubtitle($event, file)" placeholder="eg. copyright © Your name" />
-            <h2>AI tags</h2>
-            <ul>
-                <li *ngFor="let tag of file.categories">{{tag.class}}</li>
-                <li *ngIf="detectingImageAITags">Finding</li>
-                <li *ngIf="!file.categories.length">Analyzing</li>
-            </ul>
         </div>
         <div *ngIf="file.file.type.indexOf('audio') !== -1">
             <audio controls  crossorigin='anonymous'>
@@ -101,10 +95,6 @@
         <div *ngIf="video.started">
             <mat-icon *ngIf="!video.ready">hourglass_top</mat-icon>
         </div>
-        <h2>AI tags</h2>
-        <ul>
-            <li *ngFor="let category of video.categories">{{category.class}}</li>
-        </ul>
         <p *ngIf="!foundMp3" class="alert">Lisää ääniraita videoon</p>
         <p *ngIf="!foundImage" class="alert">Lisää kuva videoon</p>
         

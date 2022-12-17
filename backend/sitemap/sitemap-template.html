@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" xmlns:xhtml="http://www.w3.org/1999/xhtml" standalone="yes" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     {{#each torrents}}
         <url>
@@ -7,13 +7,17 @@
             <video:video>
                 <video:title>{{name}}</video:title>
                 <video:content_loc>https://purkkiin.fi/videoLibrary/{{filename}}</video:content_loc>
+                <video:view_count>{{plays}}</video:view_count>
                 <video:publication_date>{{date}}</video:publication_date>
+                <video:family_friendly>yes</video:family_friendly>
                 <video:live>no</video:live>
             </video:video>
             <video:video>
                 <video:title>{{name}}</video:title>
                 <video:content_loc>https://purkkiin.fi/videoLibrary/{{matroskaVideo}}</video:content_loc>
+                <video:view_count>{{plays}}</video:view_count>
                 <video:publication_date>{{date}}</video:publication_date>
+                <video:family_friendly>yes</video:family_friendly>
                 <video:live>no</video:live>
             </video:video>
         </url>

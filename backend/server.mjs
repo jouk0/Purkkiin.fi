@@ -387,6 +387,14 @@ app.get('/sitemap/:version', (req, res) => {
         torrent.name = torrent.name.replace(/_/gi, ' ')
         torrent.date = new Date(torrent.date).toISOString()
         torrent.matroskaVideo = torrent.matroskaVideo.replace('C:\\projektit\\MatroskaTesti/videos/', '')
+        statistics.forEach((statistic, ind2) => {
+            if(statistic.path === torrent.filename) {
+                torrent.plays = statistic.plays
+            }
+        })
+        if(!torrent.plays) {
+            torrent.plays = 0
+        }
     })
     let html = template({ torrents: torrents })
     fs.writeFileSync(__dirname + '/sitemap/sitemap-' + req.params.version + '.xml', html)
